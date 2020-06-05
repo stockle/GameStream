@@ -52,7 +52,6 @@ def simulate(db, datageni):
 	consumer = Thread(target=kafka_consumer.consume, args=(db, topic))
 	kafka_producer.produce(datageni, topic)
 	consumer.start()
-	consumer.join()
 
 if __name__=="__main__":
 	seed()

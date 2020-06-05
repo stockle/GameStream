@@ -8,6 +8,7 @@ def handle_event(db, event):
         (user_id, event_time, game_id, platform, platform_stats)
         VALUES (?,?,?,?,?)
     """
+    print(event)
     db.insert(query, [(
         event['UID'], event['Time'], event['Game'],
         event['Platform'], event['PlatformStats']
@@ -25,7 +26,7 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             event = pickle.loads(message.value)
-            handle_event(event)
+            handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
 
