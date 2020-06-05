@@ -6,7 +6,7 @@ def handle_event(db, event):
     query = """
         INSERT INTO events 
         (user_id, event_time, game_id, platform, platform_stats)
-        VALUES (?,?,?,?,?)
+        VALUES (%s,%s,%s,%s,%s)
     """
     print(event)
     db.insert(query, [(
