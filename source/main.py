@@ -36,7 +36,7 @@ def create_events(db):
 		CREATE TABLE IF NOT EXISTS events
 		(
 			PRIMARY KEY(user_id, event_time),
-			user_id int, event_time timestamp,
+			user_id text, event_time timestamp,
 			game_id int, platform text,
 			platform_stats text
 		);
