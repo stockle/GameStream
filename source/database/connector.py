@@ -7,17 +7,20 @@ class DBConnector:
 		self.session = None
 		self.keyspace = None
 
+	def __del__(self):
+		self.cluster.shutdown()
+
 	def init_cluster(self):
 		ap = PlainTextAuthProvider(
 			username=os.environ['DB_USER'],
 			password=os.environ['DB_PASS']
 		)
-		cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap)
-		return cluster
+		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap)
 
 	def init_session(self):
 		if not self.session:
-			self.session = self.init_cluster().connect()
+			init_cluster()
+			self.session = self.cluster.connect()
 
 	def init_keyspace(self, keyspace):
 		self.session.execute("""
