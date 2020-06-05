@@ -50,12 +50,12 @@ def populate_db(db, users):
 def simulate(db, datageni):
 	topic = 'event'
 	consumer = Thread(target=kafka_consumer.consume, args=(db, topic))
-	kafka_producer.produce(datageni, topic)
 	consumer.start()
+	kafka_producer.produce(datageni, topic)
 
 if __name__=="__main__":
 	seed()
-	datageni = data_generator.DataGenerator(5000)
+	datageni = data_generator.DataGenerator(5)
 	db = connector.DBConnector()
 
 	init_db(db)
