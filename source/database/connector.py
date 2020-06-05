@@ -19,7 +19,7 @@ class DBConnector:
 
 	def init_session(self):
 		if not self.session:
-			init_cluster()
+			self.init_cluster()
 			self.session = self.cluster.connect()
 
 	def init_keyspace(self, keyspace):
