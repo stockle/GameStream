@@ -55,7 +55,7 @@ def simulate(db, datageni):
 
 if __name__=="__main__":
 	seed()
-	datageni = data_generator.DataGenerator(5)
+	datageni = data_generator.DataGenerator(100)
 	db = connector.DBConnector()
 
 	init_db(db)

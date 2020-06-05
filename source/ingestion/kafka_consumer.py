@@ -11,7 +11,7 @@ def handle_event(db, event):
     print(event)
     db.insert(query, [(
         event['UID'], event['Time'], event['Game'],
-        event['Platform'], event['PlatformStats']
+        "event['Platform']", "event['PlatformStats']"
     )])
 
 def consume(db, topic='topic'):
