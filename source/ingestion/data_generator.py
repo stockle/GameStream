@@ -39,8 +39,8 @@ class DataGenerator():
 		uid = self.get_uid()
 		time = datetime.now()
 		game = 1#get_game()
-		platform = '1'#get_platform(game)
-		platform_stats = '1'#generate_platform_stats(platform)
+		platform = "1"#get_platform(game)
+		platform_stats = "1"#generate_platform_stats(platform)
 
 		return {
 			'UID': uid,
