@@ -69,19 +69,42 @@ class DataGenerator():
 	def generate_platform_stats(self, platform):
 		return str(supported_platform[platform])
 
-	def generate_data(self):
-		uid = self.get_uid()
-		time = datetime.now()
+	def create_purchase_event(self):
 		game = self.get_game()
 		platform = game['platform']
 		platform_stats = self.generate_platform_stats(platform)
 
 		return {
-			'UID': uid,
-			'Time': time,
 			'Game': game['game'],
 			'Platform': platform,
 			'PlatformStats': platform_stats,
+		}
+
+	def create_gameplay_event(self):
+		game = self.get_game()
+		platform = game['platform']
+		platform_stats = self.generate_platform_stats(platform)
+
+		return {
+			'Game': game['game'],
+			'Platform': platform,
+			'PlatformStats': platform_stats,
+		}
+
+	def create_event(self):
+		if random() < 0.08:
+			return 'purchase_event', self.create_purchase_event()
+		return 'gameplay_event', self.create_gameplay_event()
+
+	def generate_data(self):
+		event_type, event = self.create_event()
+		uid = self.get_uid()
+		time = datetime.now()
+
+		return {
+			'event_type': event_type,
+			'UID': uid,
+			'event': event
 		}
 
 if __name__=="__main__":

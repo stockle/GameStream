@@ -1,4 +1,5 @@
 import sys
+import json
 import pickle
 from kafka import KafkaConsumer
 
@@ -9,8 +10,10 @@ def handle_event(db, event):
         VALUES (%s,%s,%s,%s,%s)
     """
     db.insert(query, [(
-        event['UID'], event['Time'], event['Game'],
-        event['Platform'], event['PlatformStats']
+        event['UID'], event['Time'], 
+        event['event']['Game'],
+        event['event']['Platform'],
+        json.dumps(event['event']['PlatformStats'])
     )])
 
 def consume(db, topic='topic'):
