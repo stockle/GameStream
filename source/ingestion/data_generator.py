@@ -4,15 +4,17 @@ import psutil
 from datetime import datetime, timedelta
 from random import gauss, seed, randint, uniform, choice
 
+GAME_NAMES_PATH = "../data/vgsales.csv"
+
 def generate_pc_stats():
 	return {
-		'CPU': psutil.cpu_percent(interval=1) * 5,
+		'CPU': psutil.cpu_percent(interval=1) * 8 * randf(),
 		'RAM': psutil.virtual_memory()[2]
 	}
 
 def generate_ps4_stats():
 	return {
-		'CPU': psutil.cpu_percent(interval=1) * 5,
+		'CPU': psutil.cpu_percent(interval=1) * 10 * randf(),
 		'RAM': psutil.virtual_memory()[2]
 	}
 
@@ -24,7 +26,7 @@ supported_platform = {
 class DataGenerator():
 	def __init__(self, num_users=6000000):
 		self.uids = self.generate_uids(num_users)
-		self.games = self.read_games("../../data/vgsales.csv")
+		self.games = self.read_games(GAME_NAMES_PATH)
 
 	def get_users(self):
 		return self.uids
@@ -65,7 +67,7 @@ class DataGenerator():
 		return int(gauss(0.75, 0.15) * uniform(22, 70))
 
 	def generate_platform_stats(self, platform):
-		return supported_platform[platform]
+		return str(supported_platform[platform])
 
 	def generate_data(self):
 		uid = self.get_uid()
