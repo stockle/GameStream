@@ -37,7 +37,7 @@ def create_events(db):
 		(
 			PRIMARY KEY(user_id, event_time),
 			user_id text, event_time timestamp,
-			game_id int, platform text,
+			game text, platform text,
 			platform_stats text
 		);
 	"""

@@ -1,13 +1,42 @@
+import csv
 import uuid
+import psutil
 from datetime import datetime, timedelta
-from random import gauss, seed, randint, uniform
+from random import gauss, seed, randint, uniform, choice
+
+def generate_pc_stats():
+	return {
+		'CPU': psutil.cpu_percent(interval=1) * 5,
+		'RAM': psutil.virtual_memory()[2]
+	}
+
+def generate_ps4_stats():
+	return {
+		'CPU': psutil.cpu_percent(interval=1) * 5,
+		'RAM': psutil.virtual_memory()[2]
+	}
+
+supported_platform = {
+	'PC': generate_pc_stats(),
+	'PS4': generate_ps4_stats()
+}
 
 class DataGenerator():
 	def __init__(self, num_users=6000000):
 		self.uids = self.generate_uids(num_users)
+		self.games = self.read_games("../../data/vgsales.csv")
 
 	def get_users(self):
 		return self.uids
+
+	def read_games(self, fname):
+		games = []
+		with open(fname) as csv_file:
+			reader = csv.reader(csv_file)
+			for row in reader:
+				if row[2] in supported_platform:
+					games.append({'game':row[1], 'platform':row[2]})
+		return games
 
 	def generate_uids(self, num_users):
 		users = [{
@@ -19,10 +48,10 @@ class DataGenerator():
 		return users
 
 	def get_game(self):
-		return "Wii Fit"
+		return choice(self.games)
 
 	def get_uid(self):
-		user = self.uids[randint(0, len(self.uids) - 1)]
+		user = choice(self.uids)
 		if user['StartedPlaying']:
 			delta = datetime.now() - user['StartedPlaying']
 			r = gauss(0.5, 0.4)
@@ -35,17 +64,20 @@ class DataGenerator():
 	def generate_age(self):
 		return int(gauss(0.75, 0.15) * uniform(22, 70))
 
+	def generate_platform_stats(self, platform):
+		return supported_platform[platform]
+
 	def generate_data(self):
 		uid = self.get_uid()
 		time = datetime.now()
-		game = 1#get_game()
-		platform = "1"#get_platform(game)
-		platform_stats = "1"#generate_platform_stats(platform)
+		game = self.get_game()
+		platform = game['platform']
+		platform_stats = self.generate_platform_stats(platform)
 
 		return {
 			'UID': uid,
 			'Time': time,
-			'Game': game,
+			'Game': game['game'],
 			'Platform': platform,
 			'PlatformStats': platform_stats,
 		}

@@ -25,7 +25,7 @@ class DBConnector:
 	def init_keyspace(self, keyspace):
 		self.session.execute("""
 			CREATE KEYSPACE IF NOT EXISTS %s
-			WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '1' }
+			WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '2' }
 		""" % keyspace)
 		self.session.set_keyspace(keyspace)
 		self.session.execute('USE ' + keyspace)
