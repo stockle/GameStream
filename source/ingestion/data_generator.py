@@ -2,19 +2,19 @@ import csv
 import uuid
 import psutil
 from datetime import datetime, timedelta
-from random import gauss, seed, randint, uniform, choice
+from random import gauss, seed, randint, uniform, choice, random
 
 GAME_NAMES_PATH = "../data/vgsales.csv"
 
 def generate_pc_stats():
 	return {
-		'CPU': psutil.cpu_percent(interval=1) * 8 * randf(),
+		'CPU': psutil.cpu_percent(interval=1) * 8 * random(),
 		'RAM': psutil.virtual_memory()[2]
 	}
 
 def generate_ps4_stats():
 	return {
-		'CPU': psutil.cpu_percent(interval=1) * 10 * randf(),
+		'CPU': psutil.cpu_percent(interval=1) * 10 * random(),
 		'RAM': psutil.virtual_memory()[2]
 	}
 
