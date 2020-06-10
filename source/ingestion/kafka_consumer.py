@@ -30,11 +30,10 @@ def consume(db, topic='topic'):
         group_id='group1',
         bootstrap_servers=bootstrap_servers,
         auto_offset_reset='earliest',
-        value_deserializer=lambda m: msgpack.unpackb(m, object_hook=decode_datetime, raw=False)
     )
     try:
         for message in consumer:
-            event = message.value
+            event = msgpack.unpackb(message.value, object_hook=decode_datetime, raw=False)
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
