@@ -1,12 +1,9 @@
-import pickle
+import json
 import random
 import struct
 from copy import deepcopy
 if __name__ != "__main__":
     from kafka import KafkaProducer
-
-def serialize(data):
-    return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
 def produce(generator, topic='topic'):
     if __name__ != "__main__":
@@ -20,7 +17,7 @@ def produce(generator, topic='topic'):
         # print(pickle.loads(serialize(event)))
 
         if __name__ != "__main__":
-            ack = producer.send(topic_name, str(event))
+            ack = producer.send(topic_name, json.dumps(event))
 
 if __name__ == "__main__":
     import data_generator
