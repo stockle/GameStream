@@ -1,6 +1,7 @@
 import sys
 import json
 import pickle
+from ast import literal_eval
 from kafka import KafkaConsumer
 
 def handle_event(db, event):
@@ -27,7 +28,7 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            event = message.value
+            event = literal_eval(message.value)
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
