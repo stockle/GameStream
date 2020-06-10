@@ -8,12 +8,12 @@ GAME_NAMES_PATH = "../data/vgsales.csv"
 
 class DataGenerator():
 	def __init__(self, num_users=6000000):
-		self.uids = self.generate_uids(num_users)
-		self.games = self.read_games(GAME_NAMES_PATH)
 		self.supported_platform = {
 			'PC': self.generate_pc_stats(),
 			'PS4': self.generate_ps4_stats()
 		}
+		self.uids = self.generate_uids(num_users)
+		self.games = self.read_games(GAME_NAMES_PATH)
 
 	def generate_pc_stats(self):
 		return {
