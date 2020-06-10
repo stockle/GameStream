@@ -11,9 +11,8 @@ def handle_event(db, event):
         VALUES (%s,%s,%s,%s,%s)
     """
     db.insert(query, [(
-        event['UID'], event['Time'], 
-        event['event_body']['Game'],
-        event['event_body']['Platform'],
+        event['UID'], datetime.strptime(event['Time'], "%Y-%m-%d %H:%M:%S.%f"), 
+        event['event_body']['Game'], event['event_body']['Platform'],
         json.dumps(event['event_body']['PlatformStats'])
     )])
 

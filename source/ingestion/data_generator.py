@@ -1,7 +1,6 @@
 import csv
 import uuid
 import psutil
-from copy import deepcopy
 from datetime import datetime, timedelta
 from random import gauss, seed, randint, uniform, choice, random
 
@@ -99,7 +98,7 @@ class DataGenerator():
 	def generate_data(self):
 		event_type, event = self.create_event()
 		uid = self.get_uid()
-		time = datetime.now()
+		time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
 		return {
 			'event_type': event_type,
