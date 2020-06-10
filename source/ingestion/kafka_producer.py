@@ -22,7 +22,7 @@ def produce(generator, topic='topic'):
         if __name__ != "__main__":
             ack = producer.send(
                 topic_name,
-                json.dumps(event)
+                json.dumps(event, default=encode_datetime)
             )
             break
 
