@@ -15,14 +15,11 @@ def produce(generator, topic='topic'):
     if __name__ != "__main__":
         bootstrap_servers = ['localhost:9092']
         topic_name = topic
-        producer = KafkaProducer(
-            bootstrap_servers=bootstrap_servers,
-            value_serializer=lambda v: umsgpack.packb(v)
-        )
+        producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
-            ack = producer.send(topic_name, event)
+            ack = producer.send(topic_name, umsgpack.packb(event))
 
 if __name__ == "__main__":
     import data_generator
