@@ -102,9 +102,9 @@ class DataGenerator():
 		time = datetime.now()
 
 		return {
-			'event_t': event_type,
+			'event_type': event_type,
 			'UID': uid,
-			'event_body': event
+			# 'event_body': event
 		}
 
 if __name__=="__main__":
