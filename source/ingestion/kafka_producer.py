@@ -12,12 +12,10 @@ def produce(generator, topic='topic'):
         producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
         producer = KafkaProducer()
     while True:
-        event = deepcopy(generator.generate_data())
-        # print(event)
-        # print(pickle.loads(serialize(event)))
+        event = generator.generate_data()
 
         if __name__ != "__main__":
-            ack = producer.send(topic_name, json.dumps(event))
+            ack = producer.send(topic_name, json.dumps(event).encode('utf-8'))
 
 if __name__ == "__main__":
     import data_generator
