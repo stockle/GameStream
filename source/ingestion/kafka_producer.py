@@ -21,6 +21,7 @@ def produce(generator, topic='topic'):
         if __name__ != "__main__":
             print(umsgpack.packb(event))
             ack = producer.send(topic_name, umsgpack.packb(event))
+            break
 
 if __name__ == "__main__":
     import data_generator
