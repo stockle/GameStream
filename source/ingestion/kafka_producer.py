@@ -19,6 +19,7 @@ def produce(generator, topic='topic'):
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
+            print(umsgpack.packb(event))
             ack = producer.send(topic_name, umsgpack.packb(event))
 
 if __name__ == "__main__":
