@@ -20,7 +20,7 @@ def produce(generator, topic='topic'):
         # print(pickle.loads(serialize(event)))
 
         if __name__ != "__main__":
-            ack = producer.send(topic_name, serialize(event))
+            ack = producer.send(topic_name, str(event))
 
 if __name__ == "__main__":
     import data_generator
