@@ -13,7 +13,6 @@ def produce(generator, topic='topic'):
             bootstrap_servers=bootstrap_servers,
             value_serializer=lambda v: json.dumps(v).encode('utf-8')
         )
-        producer = KafkaProducer()
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
