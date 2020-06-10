@@ -11,13 +11,11 @@ def produce(generator, topic='topic'):
         topic_name = topic
         producer = KafkaProducer(
             bootstrap_servers=bootstrap_servers,
-            value_serializer=lambda v: json.dumps(v).encode('utf-8')
         )
     while True:
         event = generator.generate_data()
-        print(event)
         if __name__ != "__main__":
-            ack = producer.send(topic_name, event)
+            ack = producer.send(topic_name, json.dumps(event).encode('utf-8'))
 
 if __name__ == "__main__":
     import data_generator

@@ -109,6 +109,11 @@ class DataGenerator():
 
 if __name__=="__main__":
 	seed()
+	import json
+	from pprint import pprint
 	generator = DataGenerator(100)
 	while True:
-		print(generator.generate_data())
+		data = generator.generate_data()
+		enc = json.dumps(data).encode('utf-8')
+		pprint(enc)
+		pprint(json.loads(enc.decode('utf-8')))

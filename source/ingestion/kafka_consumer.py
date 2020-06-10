@@ -11,7 +11,7 @@ def handle_event(db, event):
         VALUES (%s,%s,%s,%s,%s)
     """
     db.insert(query, [(
-        event['UID'], datetime.strptime(event['Time'], "%Y-%m-%d %H:%M:%S.%f"), 
+        event['UID'], datetime.strptime(event['Time'], "%Y-%m-%d %H:%M:%S.%f"),
         event['event_body']['Game'], event['event_body']['Platform'],
         json.dumps(event['event_body']['PlatformStats'])
     )])
@@ -23,13 +23,12 @@ def consume(db, topic='topic'):
         topic_name,
         group_id='group1',
         bootstrap_servers=bootstrap_servers,
-        auto_offset_reset='earliest',
-        value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+        auto_offset_reset='earliest'
     )
     try:
         for message in consumer:
-            event = message.value
-            handle_event(db, event)
+            event = json.loads(message.decode('utf-8'))
+            handle_event(db, event.value)
     except KeyboardInterrupt:
         sys.exit()
 
