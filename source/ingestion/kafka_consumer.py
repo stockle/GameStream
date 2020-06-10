@@ -27,7 +27,11 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            event = pickle.loads(message.value)
+            try:
+                event = pickle.loads(message.value)
+            except pickle.UnpicklingError:
+                print('err')
+                sys.exit()
             print(event, message.value)
             handle_event(db, event)
     except KeyboardInterrupt:

@@ -4,7 +4,7 @@ import struct
 from kafka import KafkaProducer
 
 def serialize(data):
-    return pickle.dumps(data)
+    return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
 def produce(generator, topic='topic'):
     bootstrap_servers = ['localhost:9092']
