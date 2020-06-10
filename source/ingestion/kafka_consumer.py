@@ -28,7 +28,7 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            event = literal_eval(message.value.decode('utf-8'))
+            event = literal_eval(json.loads(message.value, default=str))
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
