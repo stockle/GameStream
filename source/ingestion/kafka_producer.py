@@ -3,11 +3,12 @@ import random
 import struct
 import umsgpack
 from copy import deepcopy
+from datetime import datetime
 if __name__ != "__main__":
     from kafka import KafkaProducer
 
 def encode_datetime(obj):
-    if isinstance(obj, datetime.datetime):
+    if isinstance(obj, datetime):
         return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S.%f")}
     return obj
 
@@ -19,8 +20,14 @@ def produce(generator, topic='topic'):
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
-            print(umsgpack.packb(event))
-            ack = producer.send(topic_name, umsgpack.packb(event))
+            ack = producer.send(
+                topic_name,
+                msgpack.packb(
+                    event,
+                    default=encode_datetime,
+                    use_bin_type=True
+                )
+            )
             break
 
 if __name__ == "__main__":

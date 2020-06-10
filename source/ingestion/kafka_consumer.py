@@ -4,6 +4,7 @@ import pickle
 import msgpack
 import umsgpack
 from ast import literal_eval
+from datetime import datetime
 from kafka import KafkaConsumer
 
 def handle_event(db, event):
@@ -14,13 +15,14 @@ def handle_event(db, event):
     """
     db.insert(query, [(
         event['UID'], event['Time'],
-        event['event_body']['Game'], event['event_body']['Platform'],
+        event['event_body']['Game'],
+        event['event_body']['Platform'],
         json.dumps(event['event_body']['PlatformStats'])
     )])
 
 def decode_datetime(obj):
     if '__datetime__' in obj:
-        obj = datetime.datetime.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S.%f")
+        obj = datetime.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S.%f")
     return obj
 
 def consume(db, topic='topic'):
@@ -35,7 +37,11 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             print(message.value)
-            event = msgpack.unpackb(message.value)
+            event = msgpack.unpackb(
+                message.value,
+                object_hook=decode_datetime,
+                raw=False
+            )
             print(event)
             handle_event(db, event)
     except KeyboardInterrupt:
