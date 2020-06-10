@@ -15,6 +15,7 @@ def produce(generator, topic='topic'):
         )
     while True:
         event = generator.generate_data()
+        print(event)
         if __name__ != "__main__":
             ack = producer.send(topic_name, event)
 
