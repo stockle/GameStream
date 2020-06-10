@@ -28,7 +28,7 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             try:
-                event = json.loads(message.value.decode('utf-8'), encoding="utf-8")
+                event = json.loads(message.value, encoding="utf-16")
             except pickle.UnpicklingError:
                 print('err')
                 sys.exit()

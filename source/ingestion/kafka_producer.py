@@ -13,9 +13,8 @@ def produce(generator, topic='topic'):
         producer = KafkaProducer()
     while True:
         event = generator.generate_data()
-
         if __name__ != "__main__":
-            ack = producer.send(topic_name, json.dumps(event).encode('utf-8'))
+            ack = producer.send(topic_name, json.dumps(event).encode('utf-16'))
 
 if __name__ == "__main__":
     import data_generator
