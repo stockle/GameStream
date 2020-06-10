@@ -101,11 +101,11 @@ class DataGenerator():
 		uid = self.get_uid()
 		time = datetime.now()
 
-		return deepcopy({
+		return {
 			'event_type': event_type,
 			'UID': uid,
 			'event_body': event
-		})
+		}
 
 if __name__=="__main__":
 	seed()
