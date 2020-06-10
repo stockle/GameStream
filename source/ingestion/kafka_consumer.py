@@ -28,10 +28,10 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             event = pickle.loads(message.value)
-            print(event, pickle.loads(message))
+            print(event, message.value)
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
 
 if __name__ == "__main__":
-    consume(None)
+    pass
