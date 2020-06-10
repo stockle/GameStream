@@ -17,7 +17,6 @@ def produce(generator, topic='topic'):
     producer = KafkaProducer()
     while True:
         event = generator.generate_data()
-        print(event)
         ack = producer.send(topic_name, serialize(event))
 
 if __name__ == "__main__":
