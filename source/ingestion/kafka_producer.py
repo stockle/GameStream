@@ -21,7 +21,6 @@ def produce(generator, topic='topic'):
         )
     while True:
         event = generator.generate_data()
-        print(msgpack.packb(event, default=encode_datetime, use_bin_type=True))
         if __name__ != "__main__":
             ack = producer.send(topic_name, event)
 
