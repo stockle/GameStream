@@ -23,11 +23,12 @@ def consume(db, topic='topic'):
         topic_name,
         group_id='group1',
         bootstrap_servers=bootstrap_servers,
-        auto_offset_reset='earliest'
+        auto_offset_reset='earliest',
+        value_deserializer=lambda m: json.loads(m.decode('utf-8'))
     )
     try:
         for message in consumer:
-            event = json.loads(message.value.decode('utf-8'))
+            event = message.value
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
