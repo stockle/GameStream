@@ -1,6 +1,7 @@
 import sys
 import json
 import pickle
+import msgpack
 from ast import literal_eval
 from kafka import KafkaConsumer
 
@@ -11,10 +12,15 @@ def handle_event(db, event):
         VALUES (%s,%s,%s,%s,%s)
     """
     db.insert(query, [(
-        event['UID'], datetime.strptime(event['Time'], "%Y-%m-%d %H:%M:%S.%f"),
+        event['UID'], event['Time'],
         event['event_body']['Game'], event['event_body']['Platform'],
         json.dumps(event['event_body']['PlatformStats'])
     )])
+
+def decode_datetime(obj):
+    if '__datetime__' in obj:
+        obj = datetime.datetime.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S.%f")
+    return obj
 
 def consume(db, topic='topic'):
     bootstrap_servers = ['localhost:9092']
@@ -23,11 +29,12 @@ def consume(db, topic='topic'):
         topic_name,
         group_id='group1',
         bootstrap_servers=bootstrap_servers,
-        auto_offset_reset='earliest'
+        auto_offset_reset='earliest',
+        value_deserializer=lambda m: msgpack.unpackb(m, object_hook=decode_datetime, raw=False)
     )
     try:
         for message in consumer:
-            event = json.loads(message.value().decode('utf-8'))
+            event = message.value
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()

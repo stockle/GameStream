@@ -1,9 +1,15 @@
 import json
 import random
 import struct
+import msgpack
 from copy import deepcopy
 if __name__ != "__main__":
     from kafka import KafkaProducer
+
+def encode_datetime(obj):
+    if isinstance(obj, datetime.datetime):
+        return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S.%f")}
+    return obj
 
 def produce(generator, topic='topic'):
     if __name__ != "__main__":
@@ -11,7 +17,7 @@ def produce(generator, topic='topic'):
         topic_name = topic
         producer = KafkaProducer(
             bootstrap_servers=bootstrap_servers,
-            value_serializer=lambda v: json.dumps(v).encode('utf-8')
+            value_serializer=lambda v: msgpack.packb(v, default=encode_datetime, use_bin_type=True)
         )
     while True:
         event = generator.generate_data()
