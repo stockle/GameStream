@@ -22,8 +22,9 @@ def produce(generator, topic='topic'):
         producer = KafkaProducer()
     while True:
         event = generator.generate_data()
+        encoder = DateTimeEncoder()
         if __name__ != "__main__":
-            ack = producer.send(topic_name, json.dumps(event, default=str))
+            ack = producer.send(topic_name, encoder.encode(event))
 
 if __name__ == "__main__":
     import data_generator
