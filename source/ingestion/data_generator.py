@@ -6,27 +6,26 @@ from random import gauss, seed, randint, uniform, choice, random
 
 GAME_NAMES_PATH = "../data/vgsales.csv"
 
-def generate_pc_stats():
-	return {
-		'CPU': psutil.cpu_percent(interval=1) * 8 * random(),
-		'RAM': psutil.virtual_memory()[2] * random()
-	}
-
-def generate_ps4_stats():
-	return {
-		'CPU': psutil.cpu_percent(interval=1) * 10 * random(),
-		'RAM': psutil.virtual_memory()[2] * random()
-	}
-
-supported_platform = {
-	'PC': generate_pc_stats(),
-	'PS4': generate_ps4_stats()
-}
-
 class DataGenerator():
 	def __init__(self, num_users=6000000):
 		self.uids = self.generate_uids(num_users)
 		self.games = self.read_games(GAME_NAMES_PATH)
+		self.supported_platform = {
+			'PC': self.generate_pc_stats(),
+			'PS4': self.generate_ps4_stats()
+		}
+
+	def generate_pc_stats(self):
+		return {
+			'CPU': psutil.cpu_percent(interval=1) * 8 * random(),
+			'RAM': psutil.virtual_memory()[2] * random()
+		}
+
+	def generate_ps4_stats(self):
+		return {
+			'CPU': psutil.cpu_percent(interval=1) * 10 * random(),
+			'RAM': psutil.virtual_memory()[2] * random()
+		}
 
 	def get_users(self):
 		return self.uids
@@ -36,7 +35,7 @@ class DataGenerator():
 		with open(fname) as csv_file:
 			reader = csv.reader(csv_file)
 			for row in reader:
-				if row[2] in supported_platform:
+				if row[2] in self.supported_platform:
 					games.append({'game':row[1], 'platform':row[2]})
 		return games
 
@@ -67,7 +66,7 @@ class DataGenerator():
 		return int(gauss(0.75, 0.15) * uniform(22, 70))
 
 	def generate_platform_stats(self, platform):
-		return str(supported_platform[platform])
+		return str(self.supported_platform[platform])
 
 	def create_purchase_event(self):
 		game = self.get_game()
