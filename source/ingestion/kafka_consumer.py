@@ -33,8 +33,8 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            print(message.value)
             event = umsgpack.unpackb(message.value)
+            print(event)
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()
