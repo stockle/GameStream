@@ -9,13 +9,13 @@ GAME_NAMES_PATH = "../data/vgsales.csv"
 def generate_pc_stats():
 	return {
 		'CPU': psutil.cpu_percent(interval=1) * 8 * random(),
-		'RAM': psutil.virtual_memory()[2]
+		'RAM': psutil.virtual_memory()[2] * random()
 	}
 
 def generate_ps4_stats():
 	return {
 		'CPU': psutil.cpu_percent(interval=1) * 10 * random(),
-		'RAM': psutil.virtual_memory()[2]
+		'RAM': psutil.virtual_memory()[2] * random()
 	}
 
 supported_platform = {
@@ -104,7 +104,7 @@ class DataGenerator():
 		return {
 			'event_type': event_type,
 			'UID': uid,
-			# 'event_body': event
+			'event_body': event
 		}
 
 if __name__=="__main__":

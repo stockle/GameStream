@@ -1,6 +1,7 @@
 import pickle
 import random
 import struct
+import data_generator
 from kafka import KafkaProducer
 
 def serialize(data):
