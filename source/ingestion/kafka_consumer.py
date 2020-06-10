@@ -1,7 +1,7 @@
 import sys
 import json
 import pickle
-import msgpack
+import umsgpack
 from ast import literal_eval
 from kafka import KafkaConsumer
 
@@ -34,7 +34,7 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             print(message.value)
-            event = msgpack.unpackb(message.value, object_hook=decode_datetime, raw=False)
+            event = umsgpack.unpackb(message.value)
             handle_event(db, event)
     except KeyboardInterrupt:
         sys.exit()

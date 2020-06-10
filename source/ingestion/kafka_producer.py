@@ -1,7 +1,7 @@
 import json
 import random
 import struct
-import msgpack
+import umsgpack
 from copy import deepcopy
 if __name__ != "__main__":
     from kafka import KafkaProducer
@@ -17,7 +17,7 @@ def produce(generator, topic='topic'):
         topic_name = topic
         producer = KafkaProducer(
             bootstrap_servers=bootstrap_servers,
-            value_serializer=lambda v: msgpack.packb(v, default=encode_datetime, use_bin_type=True)
+            value_serializer=lambda v: umsgpack.packb(v)
         )
     while True:
         event = generator.generate_data()
