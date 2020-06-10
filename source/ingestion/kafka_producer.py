@@ -9,7 +9,7 @@ if __name__ != "__main__":
 
 def encode_datetime(obj):
     if isinstance(obj, datetime):
-        return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S.%f")}
+        return obj.strftime("%Y%m%dT%H:%M:%S.%f")
     return obj
 
 def produce(generator, topic='topic'):
