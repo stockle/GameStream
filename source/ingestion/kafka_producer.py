@@ -22,11 +22,7 @@ def produce(generator, topic='topic'):
         if __name__ != "__main__":
             ack = producer.send(
                 topic_name,
-                msgpack.packb(
-                    event,
-                    default=encode_datetime,
-                    use_bin_type=True
-                )
+                json.dumps(event)
             )
             break
 

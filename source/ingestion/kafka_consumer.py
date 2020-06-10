@@ -37,11 +37,7 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             print(message.value)
-            event = msgpack.unpackb(
-                message.value,
-                object_hook=decode_datetime,
-                use_list=False
-            )
+            event = json.loads(message.value)
             print(event)
             handle_event(db, event)
     except KeyboardInterrupt:
