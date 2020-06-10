@@ -103,6 +103,7 @@ class DataGenerator():
 		return {
 			"event_type": event_type,
 			"UID": uid,
+			"Time": time,
 			"event_body": event
 		}
 
