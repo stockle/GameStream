@@ -24,7 +24,7 @@ def consume(db, topic='topic'):
         group_id='group1',
         bootstrap_servers=bootstrap_servers,
         auto_offset_reset='earliest',
-        value_deserializer=lambda m: json.dumps(m.decode('utf-8'))
+        value_deserializer=lambda m: json.loads(m.decode('utf-8'))
     )
     try:
         for message in consumer:
