@@ -40,7 +40,7 @@ def consume(db, topic='topic'):
             event = msgpack.unpackb(
                 message.value,
                 object_hook=decode_datetime,
-                raw=False
+                use_list=False
             )
             print(event)
             handle_event(db, event)
