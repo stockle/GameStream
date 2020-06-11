@@ -1,4 +1,4 @@
-from .kafka_consumer import EventConsumer
+import json
 
 def handle_gameplay_event(db, event):
     query = """

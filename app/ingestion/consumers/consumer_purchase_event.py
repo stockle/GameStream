@@ -1,4 +1,4 @@
-from .kafka_consumer import EventConsumer
+import json
 
 def handle_purchase_event(db, event):
     query = """
