@@ -21,9 +21,8 @@ class EventConsumer:
 
     def consume(self):
         bootstrap_servers = ['localhost:9092']
-        topic_name = topic
         consumer = KafkaConsumer(
-            topic_name,
+            self.topic,
             group_id=self.group,
             bootstrap_servers=bootstrap_servers,
             auto_offset_reset='earliest',

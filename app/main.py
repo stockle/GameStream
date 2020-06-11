@@ -2,9 +2,10 @@ from random import seed
 from threading import Thread
 from database import connector
 from ingestion import \
-	event_consumer, kafka_producer, data_generator, \
-	consumers.consumer_gameplay_event, \
-	consumers.consumer_purchase_event
+	event_consumer, kafka_producer, data_generator
+from ingestion.consumers import \
+	consumer_gameplay_event, \
+        consumer_purchase_event
 
 def init_db(db):
 	db.init_cluster()
@@ -67,11 +68,11 @@ def populate_db(db, users):
 	create_gameplay_events(db)
 
 def simulate(db, datageni):
-	purchase_evcon = event_consumer.EventConsumer(db, consumers.consumer_purchase_event.handle_purchase_event, 'events', 'purchase_event')
+	purchase_evcon = event_consumer.EventConsumer(db, consumer_purchase_event.handle_purchase_event, 'events', 'purchase_event')
 	purchase_consumer = Thread(target=purchase_evcon.consume, args=( ))
 	purchase_consumer.start()
 
-	gameplay_evcon = event_consumer.EventConsumer(db, consumers.handle_ganeplay_event, 'events', 'gameplay_event')
+	gameplay_evcon = event_consumer.EventConsumer(db, consumer_gameplay_event.handle_gameplay_event, 'events', 'gameplay_event')
 	gameplay_consumer = Thread(target=gameplay_evcon.consume, args=( ))
 	gameplay_consumer.start()
 
