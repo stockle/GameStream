@@ -1,6 +1,7 @@
 import json
 import random
 import struct
+import pickle
 import umsgpack
 from copy import deepcopy
 from datetime import datetime
@@ -23,7 +24,7 @@ def produce(generator, topic='topic'):
             print(json.dumps(event, indent=4, sort_keys=True, default=str).encode('utf-8'))
             ack = producer.send(
                 topic_name,
-                json.dumps(event, indent=4, sort_keys=True, default=str).encode('utf-8')
+                pickle.dumps(event)
             )
             break
 
