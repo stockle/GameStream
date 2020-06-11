@@ -26,10 +26,11 @@ class EventConsumer:
             group_id=self.group,
             bootstrap_servers=bootstrap_servers,
             auto_offset_reset='earliest',
+            value_deserializer=lambda m: json.loads(m.decode('ascii'))
         )
         try:
             for message in consumer:
-                event = pickle.loads(message.value)
+                event = message.value
                 self.handler(db, event)
         except KeyboardInterrupt:
             sys.exit()

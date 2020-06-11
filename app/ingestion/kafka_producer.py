@@ -6,7 +6,7 @@ import umsgpack
 from copy import deepcopy
 from datetime import datetime
 if __name__ != "__main__":
-    from kafka import KafkaProducer
+    from kafka import KafkaProducer, partitions_for
 
 def encode_datetime(obj):
     if isinstance(obj, datetime):
@@ -16,14 +16,17 @@ def encode_datetime(obj):
 def produce(generator):
     if __name__ != "__main__":
         bootstrap_servers = ['localhost:9092']
-        producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
+        producer = KafkaProducer(
+            bootstrap_servers=bootstrap_servers,
+            value_serializer=lambda m: json.dumps(m).encode('ascii')
+        )
     while True:
         event = generator.generate_data()
-        print(KafkaProducer.partitions_for('events'))
+        print(partitions_for('events'))
         if __name__ != "__main__":
             ack = producer.send(
                 'events',
-                pickle.dumps(event),
+                event,
                 partition=event['event_type']
             )
             break
