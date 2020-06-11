@@ -37,7 +37,7 @@ def consume(db, topic='topic'):
     try:
         for message in consumer:
             print(message.value.decode('utf-8'))
-            event = json.loads(message.value)
+            event = json.loads(message.value.decode('utf-8'))
             print(event)
             handle_event(db, event)
     except KeyboardInterrupt:

@@ -20,7 +20,7 @@ def produce(generator, topic='topic'):
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
-            print(json.dumps(event, default=encode_datetime))
+            print(json.dumps(event, default=encode_datetime).encode('utf-8'))
             ack = producer.send(
                 topic_name,
                 json.dumps(event, default=encode_datetime).encode('utf-8')
