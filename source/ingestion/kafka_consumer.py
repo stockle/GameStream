@@ -36,7 +36,7 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            event = pickel.loads(message.value)
+            event = pickle.loads(message.value)
             print(event)
             handle_event(db, event)
     except KeyboardInterrupt:
