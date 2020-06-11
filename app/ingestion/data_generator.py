@@ -4,7 +4,7 @@ import psutil
 from datetime import datetime, timedelta
 from random import gauss, seed, randint, uniform, choice, random
 
-GAME_NAMES_PATH = "../data/vgsales.csv"
+GAME_NAMES_PATH = "./data/vgsales.csv"
 
 class DataGenerator():
 	def __init__(self, num_users=6000000):
