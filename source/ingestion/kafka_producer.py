@@ -21,7 +21,6 @@ def produce(generator, topic='topic'):
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
-            print(json.dumps(event, indent=4, sort_keys=True, default=str).encode('utf-8'))
             ack = producer.send(
                 topic_name,
                 pickle.dumps(event)
