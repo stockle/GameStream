@@ -2,8 +2,9 @@ from random import seed
 from threading import Thread
 from database import connector
 from ingestion import \
-	event_consumer, kafka_producer, \
-	data_generator, consumers
+	event_consumer, kafka_producer, data_generator, \
+	consumers.consumer_gameplay_event, \
+	consumers.consumer_purchase_event
 
 def init_db(db):
 	db.init_cluster()
