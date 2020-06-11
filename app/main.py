@@ -62,7 +62,8 @@ def create_purchase_events(db):
 
 def populate_db(db, users):
 	create_users(db, users)
-	create_events(db)
+	create_purchase_events(db)
+	create_gameplay_events(db)
 
 def simulate(db, datageni):
 	purchase_evcon = EventConsumer(db, consumers.consumer_purchase_event.handle_purchase_event, 'events', 'purchase_event')
