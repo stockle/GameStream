@@ -36,7 +36,7 @@ def consume(db, topic='topic'):
     )
     try:
         for message in consumer:
-            print(message.value)
+            print(message.value.decode('utf-8'))
             event = json.loads(message.value)
             print(event)
             handle_event(db, event)
