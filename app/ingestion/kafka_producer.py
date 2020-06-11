@@ -19,6 +19,7 @@ def produce(generator):
         producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
     while True:
         event = generator.generate_data()
+        print(KafkaProducer.partitions_for('events'))
         if __name__ != "__main__":
             ack = producer.send(
                 'events',
