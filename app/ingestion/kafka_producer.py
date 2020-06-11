@@ -13,17 +13,17 @@ def encode_datetime(obj):
         return obj.strftime("%Y%m%dT%H:%M:%S.%f")
     return obj
 
-def produce(generator, topic='topic'):
+def produce(generator):
     if __name__ != "__main__":
         bootstrap_servers = ['localhost:9092']
-        topic_name = topic
         producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
     while True:
         event = generator.generate_data()
         if __name__ != "__main__":
             ack = producer.send(
-                topic_name,
-                pickle.dumps(event)
+                'events',
+                pickle.dumps(event),
+                partition=event['event_type']
             )
             break
 
