@@ -9,6 +9,10 @@
  - [ ] Run the Consumer scripts on each of those nodes
   - Two each for `gameplay_events` and `purchase_events`
 
+## Website
+ - [ ] Deploy Flask to Ec2
+ - [ ] Point Ec2 to DNS
+
 ## Data
  - [ ] Bucket ages into age brackets instead of actual age
   - [ ] Determine a data model that supports age brackets in the database and when presenting the data
