@@ -31,6 +31,7 @@ class EventConsumer:
         try:
             for message in consumer:
                 event = message.value
+                print(event)
                 self.handler(db, event)
         except KeyboardInterrupt:
             sys.exit()
