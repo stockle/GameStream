@@ -13,3 +13,6 @@
  - [ ] Bucket ages into age brackets instead of actual age
   - [ ] Determine a data model that supports age brackets in the database and when presenting the data
    - Age should be semi-anonimized before it gets to the database
+
+## Repo
+ - [ ] Break out scripts into their respective folders
