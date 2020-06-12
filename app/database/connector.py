@@ -2,6 +2,8 @@ import os
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster, BatchStatement
 
+DB_IDLE = 10
+
 class DBConnector:
 	def __init__(self):
 		self.session = None
@@ -15,7 +17,7 @@ class DBConnector:
 			username=os.environ['DB_USER'],
 			password=os.environ['DB_PASS']
 		)
-		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap)
+		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap, idle_heartbeat_interval=DB_IDLE)
 
 	def init_session(self):
 		if not self.session:
