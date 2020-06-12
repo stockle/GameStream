@@ -1,5 +1,7 @@
+import logging
 from random import seed
 from threading import Thread
+from datetime import datetime
 from database import connector
 from ingestion import \
 	event_consumer, kafka_producer, data_generator
@@ -88,6 +90,12 @@ def simulate(db, datageni):
 
 if __name__=="__main__":
 	seed()
+	logging.basicConfig(
+		filename='/tmp/gamestream-main-'
+		+ datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+		+ '-.log',
+		level=logging.DEBUG
+	)
 	datageni = data_generator.DataGenerator(101)
 	db = connector.DBConnector()
 

@@ -1,9 +1,6 @@
 import json
 import random
-import struct
-import pickle
-import umsgpack
-from copy import deepcopy
+import logging
 from datetime import datetime
 if __name__ != "__main__":
     from kafka import KafkaProducer, partitions_for
@@ -20,6 +17,12 @@ def produce(generator):
             bootstrap_servers=bootstrap_servers,
             value_serializer=lambda m: json.dumps(m).encode('ascii')
         )
+    logging.basicConfig(
+        filename='/tmp/gamestream-main-'
+        + datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+        + '-.log',
+        level=logging.DEBUG
+    )
     while True:
         event = generator.generate_data()
         print(partitions_for('events'))
@@ -28,7 +31,7 @@ def produce(generator):
                 event['event_type'],
                 event
             )
-            break
+            logging.info('Sent message ('++'):', ack)
 
 if __name__ == "__main__":
     import data_generator

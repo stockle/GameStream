@@ -1,9 +1,6 @@
 import sys
 import json
-import pickle
-import msgpack
-import umsgpack
-from ast import literal_eval
+import logging
 from datetime import datetime
 from kafka import KafkaConsumer
 
@@ -28,10 +25,21 @@ class EventConsumer:
             auto_offset_reset='earliest',
             value_deserializer=lambda m: json.loads(m.decode('ascii'))
         )
+        logging.basicConfig(
+            filename='/tmp/gamestream-main-'
+            + datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+            + '-.log',
+            level=logging.DEBUG
+        )
         try:
             for message in consumer:
                 event = message.value
-                print(event)
+                logging.info(
+                    'Received message ('
+                    + self.topic + '/'
+                    + self.group
+                    + '):', event
+                )
                 self.handler(db, event)
         except KeyboardInterrupt:
             sys.exit()
