@@ -31,7 +31,7 @@ def produce(generator):
                 event['event_type'],
                 event
             )
-            logging.info('Sent message ('++'):', ack)
+            logging.info('Sent message ('+str(event['event_type'])+'):', ack)
 
 if __name__ == "__main__":
     import data_generator
