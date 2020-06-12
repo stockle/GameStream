@@ -2,7 +2,7 @@ import csv
 import uuid
 import psutil
 from datetime import datetime, timedelta
-from random import gauss, seed, randint, uniform, choice, random
+from random import gauss, seed, randint, uniform, choice, random, rand_range
 
 GAME_NAMES_PATH = "./data/vgsales.csv"
 
@@ -76,7 +76,8 @@ class DataGenerator():
 		return {
 			"Game": game["game"],
 			"Platform": platform,
-			"PlatformStats": platform_stats,
+			"Item": "none",
+			"Price": rand_range(0.5, 60.0)
 		}
 
 	def create_gameplay_event(self):
