@@ -25,9 +25,8 @@ def produce(generator):
         print(partitions_for('events'))
         if __name__ != "__main__":
             ack = producer.send(
-                'events',
-                event,
-                partition=event['event_type']
+                event['event_type'],
+                event
             )
             break
 
