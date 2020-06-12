@@ -7,7 +7,7 @@ def handle_purchase_event(db, event):
         VALUES (%s,%s,%s,%s,%s,%s)
     """
     db.insert(query, [(
-        event['UID'], event['Time'],
+        event['UID'], event['Time'][:-3],
         event['event_body']['Game'],
         event['event_body']['Platform'],
         event['event_body']['Item'],
