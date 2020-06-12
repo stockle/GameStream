@@ -77,7 +77,7 @@ class DataGenerator():
 			"Game": game["game"],
 			"Platform": platform,
 			"Item": "none",
-			"Price": rand_range(0.5, 60.0)
+			"Price": uniform(0.5, 60.0)
 		}
 
 	def create_gameplay_event(self):
