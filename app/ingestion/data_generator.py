@@ -92,7 +92,7 @@ class DataGenerator():
 		}
 
 	def create_event(self):
-		if random() < 0.08:
+		if random() < 0.15:
 			return "purchase_event", self.create_purchase_event()
 		return "gameplay_event", self.create_gameplay_event()
 

@@ -7,6 +7,7 @@ DB_IDLE = 10
 class DBConnector:
 	def __init__(self):
 		self.session = None
+		self.cluster = None
 		self.keyspace = None
 
 	def __del__(self):
