@@ -4,7 +4,7 @@ from pyspark.sql import SQLContext
 
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0 --conf spark.cassandra.connection.host='+os.environ['DB_ADDR']+' pyspark-shell'
 
-sc = SparkContext("v1", "spark_analytics")
+sc = SparkContext("local", "spark_analytics")
 sqlContext = SQLContext(sc)
 
 def load_and_get_table_df(keys_space_name, table_name):
