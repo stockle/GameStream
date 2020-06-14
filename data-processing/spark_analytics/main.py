@@ -2,7 +2,14 @@ import os
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
 
-os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0 --conf spark.cassandra.connection.host='+os.environ['DB_ADDR']+' pyspark-shell'
+os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
+	--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
+	--conf
+		spark.cassandra.connection.host={os.environ['DB_ADDR']}
+		spark.cassandra.connection.username={os.environ['DB_USER']}
+		spark.cassandra.connection.password={os.environ['DB_PASS']}
+	pyspark-shell
+	"""
 
 sc = SparkContext("local", "spark_analytics")
 sqlContext = SQLContext(sc)
