@@ -6,8 +6,8 @@ os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
 	--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
 	--conf
 		spark.cassandra.connection.host={os.environ['DB_ADDR']}
-		spark.cassandra.connection.username={os.environ['DB_USER']}
-		spark.cassandra.connection.password={os.environ['DB_PASS']}
+		spark.cassandra.auth.username={os.environ['DB_USER']}
+		spark.cassandra.auth.password={os.environ['DB_PASS']}
 	pyspark-shell
 	"""
 
