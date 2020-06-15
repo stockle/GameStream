@@ -1,7 +1,7 @@
 # TODO
 ## Spark
  - [ ] Create PySpark script
-  - [ ] Connector from PySpark to Cassandra
+  - [x] Connector from PySpark to Cassandra
     - [ ] Execute first SparkSQL statement to join `gameplay_events` with `purchase_events`
 
 ## Kafka
