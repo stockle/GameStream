@@ -1,7 +1,7 @@
 import numpy
 import pandas as pd
 from database import connector
-from flask import Flask, Markup, render_template
+from flask import Flask, Markup, render_template, request
 
 app = Flask(__name__)
 
