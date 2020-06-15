@@ -4,6 +4,7 @@ from database import connector
 from flask import Flask, Markup, render_template, request
 
 app = Flask(__name__)
+app.debug = True
 
 db = connector.DBConnector()
 db.init_session()
