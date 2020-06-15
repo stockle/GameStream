@@ -1,8 +1,6 @@
 import os
-from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
-# spark.cassandra.auth.password={os.environ['DB_PASS']}
-# spark.cassandra.auth.username={os.environ['DB_USER']}
+from pyspark import SparkContext, SparkConf
 
 os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
 	--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
