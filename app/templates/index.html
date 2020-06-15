@@ -8,7 +8,7 @@
 
 <body>
 	<center>
-		<form action="/" method="post">
+		<form action="{{ url_for('handle_form_submit') }}" method="post">
 			<label for="game_name">Game Name</label>
 			<input type="text" id="game_name" value="Fallout Trilogy"/>
 			
@@ -18,15 +18,16 @@
 			<label for="system_ps4">PS4</label>
 			<input type="checkbox" id="system_ps4"/>
 
-			<label for="age_bracket">Age Group</label>
-			<input type="range" id="age_bracket">
+			<label for="age_bracket_from">Age Group</label>
+			<input type="number" id="age_bracket_from" name="quantity" min="13" max="75">
+			<input type="number" id="age_bracket_to" name="quantity" min="13" max="75">
 
 			<label for="datetime_from">From</label>
 			<input type="datetime-local" id="datetime_from">
 			<label for="datetime_to">To</label>
 			<input type="datetime-local" id="datetime_to">
 
-			<input type="button"/>
+			<input type="button" value="submit"/>
 		</form>
 	</center>
 
