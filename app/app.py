@@ -39,7 +39,7 @@ def spark_submit_query(query):
 @app.route('/', methods=["GET", "POST"])
 def handle_form_submit():
     form_data = request.form
-    print(form_data)
+    app.logger.info('form submitted:', form_data)
     query = construct_query(form_data)
     labels, values = spark_submit_query(query)
     return render_template('index.html', title='PC Users per 100ms', max=max(values) + 1, labels=labels, values=values)
