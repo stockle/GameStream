@@ -23,7 +23,7 @@ def construct_query(data):
     return query
 
 def spark_submit_query(query):
-    values = db.select()
+    values = db.select(query)
     line_values = []
     df = pd.DataFrame(list(values))
     df['event_time'].astype('datetime64')
