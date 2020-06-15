@@ -7,6 +7,29 @@
 </head>
 
 <body>
+	<center>
+		<form action="/" method="post">
+			<label for="game_name">Game Name</label>
+			<input type="text" id="game_name" value="Fallout Trilogy"/>
+			
+			<label for="system_pc">PC</label>
+			<input type="checkbox" id="system_pc"/>
+
+			<label for="system_ps4">PS4</label>
+			<input type="checkbox" id="system_ps4"/>
+
+			<label for="age_bracket">Age Group</label>
+			<input type="range" id="age_bracket">
+
+			<label for="datetime_from">From</label>
+			<input type="datetime-local" id="datetime_from">
+			<label for="datetime_to">To</label>
+			<input type="datetime-local" id="datetime_to">
+
+			<input type="button"/>
+		</form>
+	</center>
+
   <center>
     <h1>{{ title }}</h1>
 

@@ -29,7 +29,7 @@ colors = [
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
-@app.route('/line')
+@app.route('/', methods=["GET", "POST"])
 def line():
     line_labels=labels
     return render_template('line_chart.html', title='Users per 100ms', max=max(line_values), labels=line_labels, values=line_values)
