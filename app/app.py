@@ -17,10 +17,6 @@ os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
         pyspark-shell
     """
 
-db = connector.DBConnector()
-db.init_session()
-db.init_keyspace('v1')
-
 sdb = spark_connector.SparkConnector()
 
 colors = [
