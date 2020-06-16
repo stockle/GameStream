@@ -30,17 +30,17 @@ def construct_query(data):
         JOIN v1.purchase_events pe
     """
     if 'system_pc' in data:
-        query += f""" ON pe.platform={data['system_pc']} """
+        query += f""" ON pe.platform == {data['system_pc']} """
     if 'system_ps4' in data:
-        query += f""" AND pe.platform={data['system_ps4']} """
+        query += f""" AND pe.platform == {data['system_ps4']} """
     if 'age_bracket_from' in data or 'age_bracket_to' in data:
-        query += f""" JOIN v1.users u"""
+        query += f""" JOIN v1.users u ON u.user_id == ge.id"""
         if 'age_bracket_from' in data:
-            query += f""" ON u.age > {data['age_bracket_from']}"""
+            query += f""" WHERE u.age > {data['age_bracket_from']}"""
             if 'age_bracket_to' in data:
                 query += f""" AND u.age < {data['age_bracket_to']}"""
         elif 'age_bracket_to' in data:
-            query += f""" ON u.age < {data['age_bracket_to']}"""
+            query += f""" WHERE u.age < {data['age_bracket_to']}"""
     if 'datetime_from' in data or 'datetime_to' in data or 'game_name' in data:
         query += f""" WHERE"""
         if 'datetime_from' in data:
@@ -49,8 +49,8 @@ def construct_query(data):
             query += f""" AND ge.event_time < {datetime(data['datetime_to'])}"""
         if 'game_name' in data:
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
-    query += f""" ORDER BY ge.event_time ASC"""
-    #app.logger.info('query string:', query)
+    query += f""" ORDER BY ge.event_time ASC LIMIT 10"""
+    # app.logger.info('query string:', query)
     return query
 
 def spark_submit_query(query):
@@ -61,7 +61,11 @@ def spark_submit_query(query):
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
     user.registerTempTable("purchase_events")
 
-    df = sdb.submit_sql(query)
+    df = sdb.submit_sql("""
+        SELECT * FROM gameplay_events ge
+        JOIN purchase_events pe
+        ON ge.user_id == pe.user_id
+    """)
 
     # df = gevents.join(pevents,
     #     (pevents.platform == form_data['system_pc']
@@ -90,12 +94,18 @@ def spark_submit_query(query):
 @app.route('/', methods=["GET", "POST"])
 def handle_form_submit():
     form_data = request.form
-    #app.logger.info('form submitted:', form_data)
+    # app.logger.info('form submitted:', form_data)
     
     query = construct_query(form_data)
     labels, values, system_stats = spark_submit_query(query)
     
-    return render_template('index.html', title='PC Users per 100ms', max=max(values) + 1, labels=labels, values=values)
+    return render_template(
+        'index.html',
+        title='PC Users per 100ms',
+        max=max(values) + 1,
+        labels=labels,
+        values=values
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
