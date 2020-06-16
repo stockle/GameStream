@@ -19,7 +19,7 @@ class SparkConnector:
 			OPTIONS (
 				table "gameplay_events",
 				keyspace "v1"
-			);
+			)
 		""")
 
 		self.submit_sql("""
@@ -28,7 +28,7 @@ class SparkConnector:
 			OPTIONS (
 				table "purchase_events",
 				keyspace "v1"
-			);
+			)
 		""")
 
 		self.submit_sql("""
@@ -37,7 +37,7 @@ class SparkConnector:
 			OPTIONS (
 				table "users",
 				keyspace "v1"
-			);
+			)
 		""")
 
 	def submit_sql(self, query):
