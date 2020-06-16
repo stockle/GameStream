@@ -51,7 +51,7 @@ def construct_query(data):
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
     return query
 
-def spark_submit_query(form_data):
+def spark_submit_query(query):
     df = sdb.submit_sql(query)
 
     # df = gevents.join(pevents,
@@ -71,6 +71,7 @@ def spark_submit_query(form_data):
 
     df['event_time'].astype('datetime64')
     lines = df.groupby(pd.Grouper(key='event_time', freq='100ms')).event_time.agg('count').to_frame('count').reset_index()
+    df.show()
     values = lines['count'].values
     labels = lines['event_time'].values
     print(labels)
