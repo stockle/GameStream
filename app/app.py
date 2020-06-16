@@ -58,22 +58,24 @@ def spark_submit_query(data):
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
     # user.registerTempTable("purchase_events")
 
-    df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
+    df = gevents.where(col('game').like(data['game_name']))
 
-    # df = gevents.join(pevents,
-    #     (pevents.platform == form_data['system_pc']
-    #     | pevents.platform == form_data['system_ps4'])
-    # ).join(users,
-    #     user.id == gevents.user_id
-    #     & form_data['age_bracket_from'] <= user.age
-    #     & user.age <= form_data['age_bracket_to']
-    # ).where(
-    #     form_data['datetime_from']
-    #     <= gevents.event_time
-    #     & gevents.event_time
-    #     <= form_data['datetime_to']
-    #     & col('game').like(form_data['game_name'])
-    # )
+    # df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
+
+    # # df = gevents.join(pevents,
+    # #     (pevents.platform == form_data['system_pc']
+    # #     | pevents.platform == form_data['system_ps4'])
+    # # ).join(users,
+    # #     user.id == gevents.user_id
+    # #     & form_data['age_bracket_from'] <= user.age
+    # #     & user.age <= form_data['age_bracket_to']
+    # # ).where(
+    # #     form_data['datetime_from']
+    # #     <= gevents.event_time
+    # #     & gevents.event_time
+    # #     <= form_data['datetime_to']
+    # #     & col('game').like(form_data['game_name'])
+    # # )
 
     df['event_time'].astype('datetime64')
     lines = df.groupby(pd.Grouper(key='event_time', freq='100ms')).event_time.agg('count').to_frame('count').reset_index()
