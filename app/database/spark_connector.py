@@ -21,7 +21,7 @@ class SparkConnector:
 			);
 		""")
 
-  		self.submit_sql("""
+		self.submit_sql("""
 			CREATE TEMPORARY VIEW purchase_events
 			USING org.apache.spark.sql.cassandra
 			OPTIONS (
