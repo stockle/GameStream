@@ -6,12 +6,12 @@ from pyspark_cassandra import CassandraSparkContext
 class SparkConnector:
 	def __init__(self):
 		# os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
-  #       	--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
+  #       	--packages 
   #   	"""
 		conf = SparkConf() \
 			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
-			.set('org.apache.spark.sql.cassandra', '/home/ubuntu/server/spark-2.4.5-bin-hadoop2.7/jars/spark-cassandra-connector_2.11-2.5.0.jar/spark-cassandra-connector_2.11-2.5.0.jar') \
+			.set('--pacakges', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
 			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.set('spark.cassandra.auth.password', os.environ['DB_PASS'])
