@@ -24,48 +24,41 @@ colors = [
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
-def construct_query(data):
-    query = f"""
-        SELECT * FROM v1.gameplay_events ge
-        JOIN v1.purchase_events pe
-    """
-    if 'system_pc' in data:
-        query += f""" ON pe.platform == {data['system_pc']} """
-    if 'system_ps4' in data:
-        query += f""" AND pe.platform == {data['system_ps4']} """
-    if 'age_bracket_from' in data or 'age_bracket_to' in data:
-        query += f""" JOIN v1.users u ON u.user_id == ge.id"""
-        if 'age_bracket_from' in data:
-            query += f""" WHERE u.age > {data['age_bracket_from']}"""
-            if 'age_bracket_to' in data:
-                query += f""" AND u.age < {data['age_bracket_to']}"""
-        elif 'age_bracket_to' in data:
-            query += f""" WHERE u.age < {data['age_bracket_to']}"""
-    if 'datetime_from' in data or 'datetime_to' in data or 'game_name' in data:
-        query += f""" WHERE"""
-        if 'datetime_from' in data:
-            query += f""" ge.event_time > {datetime(data['datetime_from'])}"""
-        if 'datetime_to' in data:
-            query += f""" AND ge.event_time < {datetime(data['datetime_to'])}"""
-        if 'game_name' in data:
-            query ++ f""" AND ge.game LIKE {data['game_name']}"""
-    query += f""" ORDER BY ge.event_time ASC LIMIT 10"""
-    # app.logger.info('query string:', query)
+def join_df_tables(gevents, pevents, users, data):
+    df = gevents.join(pevents).join(users, users.id == gevents.user_id)
+
+    # join dates
+    if 'datetime_from' in data:
+        df = gevents.where(df.event_time > datetime(data['datetime_from']))
+    if 'datetime_to' in data:
+        df = gevents.where(df.event_time < datetime(data['datetime_to']))
+    if 'game_name' in data:
+        df = gevents.where(col('game').like(data['game_name']))
+
+    # join system
+    if 'system_pc' in data and 'system_ps4' in data:
+        df.where(df.platform == data['system_pc'] | df.platform == data['system_ps4'])
+    elif 'system_ps4' in data:
+        df.where(df.platform == data['system_ps4'])
+    elif 'system_pc' in data:
+        df.where(df.platform == data['system_pc'])
+
+    if 'age_bracket_from' in data:
+        df.where(df.age > data['age_bracket_from'])
+    if 'age_bracket_to' in data:
+        df.where(df.age < data['age_bracket_to'])
+
     return query
 
-def spark_submit_query(query):
+def spark_submit_query(data):
     users = sdb.load_and_get_table_df("v1", "users")
-    user.registerTempTable("users")
+    # user.registerTempTable("users")
     gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
-    user.registerTempTable("gameplay_events")
+    # user.registerTempTable("gameplay_events")
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
-    user.registerTempTable("purchase_events")
+    # user.registerTempTable("purchase_events")
 
-    df = sdb.submit_sql("""
-        SELECT * FROM v1.gameplay_events ge
-        JOIN v1.purchase_events pe
-        ON ge.user_id == pe.user_id
-    """)
+    df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
 
     # df = gevents.join(pevents,
     #     (pevents.platform == form_data['system_pc']
@@ -96,8 +89,8 @@ def handle_form_submit():
     form_data = request.form
     # app.logger.info('form submitted:', form_data)
     
-    query = construct_query(form_data)
-    labels, values, system_stats = spark_submit_query(query)
+    # query = construct_query(form_data)
+    labels, values, system_stats = spark_submit_query(form_data)
     
     return render_template(
         'index.html',
