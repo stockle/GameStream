@@ -5,6 +5,9 @@ from pyspark_cassandra import CassandraSparkContext
 
 class SparkConnector:
 	def __init__(self):
+		os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
+        	--packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
+    	"""
 		conf = SparkConf() \
 			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
