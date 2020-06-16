@@ -11,7 +11,7 @@ class SparkConnector:
 		conf = SparkConf() \
 			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
-			.set('--pacakges', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
+			.set('spark.jars.packages', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
 			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.set('spark.cassandra.auth.password', os.environ['DB_PASS'])
