@@ -14,6 +14,9 @@ class SparkConnector:
 		self.sc = SparkContext("local", "spark_analytics")
 		self.sqlContext = SQLContext(sc)
 
+	def submit_sql(self, query):
+		return self.sqlContext.sql(query).collect()
+
 	def load_and_get_table_df(self, keys_space_name, table_name):
 		table_df = sqlContext.read\
 			.format("org.apache.spark.sql.cassandra")\
