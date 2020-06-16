@@ -8,12 +8,12 @@ from flask import Flask, Markup, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
-        --packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
-        --conf
-            spark.cassandra.connection.host={os.environ['DB_ADDR']}
-        pyspark-shell
-    """
+# os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
+#         --packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
+#         --conf
+#             spark.cassandra.connection.host={os.environ['DB_ADDR']}
+#         pyspark-shell
+#     """
 
 db = connector.DBConnector()
 db.init_session()
@@ -47,7 +47,7 @@ def construct_query(data):
         query += f""" WHERE"""
         if 'datetime_from' in data:
             query += f""" ge.event_time > {datetime(data['datetime_from'])}"""
-        if 'datetime_to'
+        if 'datetime_to' in data:
             query += f""" AND ge.event_time < {datetime(data['datetime_to'])}"""
         if 'game_name' in data:
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
