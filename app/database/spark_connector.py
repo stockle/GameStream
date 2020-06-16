@@ -5,7 +5,7 @@ from pyspark.sql import SQLContext, SparkSession
 class SparkConnector:
 	def __init__(self):
 		conf = SparkConf() \
-			.setMaster("spark://spark-master:7077") \
+			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
 			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
