@@ -9,11 +9,6 @@ from flask import Flask, Markup, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-# os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
-#         --packages com.datastax.spark:spark-cassandra-connector_2.11:2.3.0
-#         pyspark-shell
-#     """
-
 sdb = spark_connector.SparkConnector()
 
 colors = [
