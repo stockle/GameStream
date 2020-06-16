@@ -26,15 +26,15 @@ colors = [
 
 def construct_query(data):
     query = f"""
-        SELECT * FROM v1.gameplay_events AS ge
-        JOIN v1.purchase_events AS pe
+        SELECT * FROM gameplay_events AS ge
+        JOIN purchase_events AS pe
     """
     if 'system_pc' in data:
         query += f"""ON pe.platform={data['system_pc']} """
     if 'system_ps4' in data:
         query += f""" AND pe.platform={data['system_ps4']} """
     if 'age_bracket_from' in data or 'age_bracket_to' in data:
-        query += f""" JOIN v1.users AS u"""
+        query += f""" JOIN users AS u"""
         if 'age_bracket_from' in data:
             query += f""" ON u.age > {data['age_bracket_from']}"""
             if 'age_bracket_to' in data:
