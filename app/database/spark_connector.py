@@ -1,15 +1,9 @@
 import os
-from pyspark.sql import SQLContext, SparkSession
+from pyspark.sql import SQLContext
 from pyspark import SparkContext, SparkConf
 
 class SparkConnector:
 	def __init__(self):
-		spark = SparkSession.builder \
-			.appName('SparkCassandraAnalytics') \
-			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
-			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
-			.config('spark.cassandra.auth.password', os.environ['DB_PASS']) \
-			.getOrCreate()
 		self.sc = SparkContext("local", "spark_analytics")
 		self.sqlContext = SQLContext(sc)
 
