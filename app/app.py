@@ -2,7 +2,7 @@ import os
 import numpy
 import pandas as pd
 from datetime import datetime
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, asc
 from database import connector, spark_connector
 from flask import Flask, Markup, render_template, request
 
@@ -30,7 +30,7 @@ def construct_query(data):
         JOIN v1.purchase_events pe
     """
     if 'system_pc' in data:
-        query += f"""ON pe.platform={data['system_pc']} """
+        query += f""" ON pe.platform={data['system_pc']} """
     if 'system_ps4' in data:
         query += f""" AND pe.platform={data['system_ps4']} """
     if 'age_bracket_from' in data or 'age_bracket_to' in data:
@@ -50,6 +50,7 @@ def construct_query(data):
         if 'game_name' in data:
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
     query += f""" ORDER BY ge.event_time ASC"""
+    app.logger.info('query string:', query)
     return query
 
 def spark_submit_query(query):
