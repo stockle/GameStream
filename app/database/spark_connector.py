@@ -12,32 +12,6 @@ class SparkConnector:
 			.set('spark.cassandra.auth.password', os.environ['DB_PASS'])
 		sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
-		self.submit_sql("""
-			CREATE TEMPORARY VIEW gameplay_events
-			USING org.apache.spark.sql.cassandra
-			OPTIONS (
-				table "gameplay_events",
-				keyspace "v1"
-			);
-		""")
-
-		self.submit_sql("""
-			CREATE TEMPORARY VIEW purchase_events
-			USING org.apache.spark.sql.cassandra
-			OPTIONS (
-				table "purchase_events",
-				keyspace "v1"
-			);
-		""")
-
-		self.submit_sql("""
-			CREATE TEMPORARY VIEW users
-			USING org.apache.spark.sql.cassandra
-			OPTIONS (
-				table "users",
-				keyspace "v1"
-			);
-		""")
 
 	def submit_sql(self, query):
 		return self.sqlContext.sql(query).collect()
