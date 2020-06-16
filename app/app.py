@@ -50,15 +50,15 @@ def construct_query(data):
         if 'game_name' in data:
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
     query += f""" ORDER BY ge.event_time ASC"""
-    app.logger.info('query string:', query)
+    #app.logger.info('query string:', query)
     return query
 
 def spark_submit_query(query):
-    users = sdb.load_and_get_table("v1", "users")
+    users = sdb.load_and_get_table_df("v1", "users")
     user.registerTempTable("users")
-    gevents = sdb.load_and_get_table("v1", "gameplay_events")
+    gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
     user.registerTempTable("gameplay_events")
-    pevents = sdb.load_and_get_table("v1", "purchase_events")
+    pevents = sdb.load_and_get_table_df("v1", "purchase_events")
     user.registerTempTable("purchase_events")
 
     df = sdb.submit_sql(query)
@@ -90,7 +90,7 @@ def spark_submit_query(query):
 @app.route('/', methods=["GET", "POST"])
 def handle_form_submit():
     form_data = request.form
-    app.logger.info('form submitted:', form_data)
+    #app.logger.info('form submitted:', form_data)
     
     query = construct_query(form_data)
     labels, values, system_stats = spark_submit_query(query)
