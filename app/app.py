@@ -26,15 +26,15 @@ colors = [
 
 def construct_query(data):
     query = f"""
-        SELECT * FROM gameplay_events AS ge
-        JOIN purchase_events AS pe
+        SELECT * FROM v1.gameplay_events ge
+        JOIN v1.purchase_events pe
     """
     if 'system_pc' in data:
         query += f"""ON pe.platform={data['system_pc']} """
     if 'system_ps4' in data:
         query += f""" AND pe.platform={data['system_ps4']} """
     if 'age_bracket_from' in data or 'age_bracket_to' in data:
-        query += f""" JOIN users AS u"""
+        query += f""" JOIN v1.users u"""
         if 'age_bracket_from' in data:
             query += f""" ON u.age > {data['age_bracket_from']}"""
             if 'age_bracket_to' in data:
@@ -49,6 +49,7 @@ def construct_query(data):
             query += f""" AND ge.event_time < {datetime(data['datetime_to'])}"""
         if 'game_name' in data:
             query ++ f""" AND ge.game LIKE {data['game_name']}"""
+    query += f""" ORDER BY ge.event_time ASC"""
     return query
 
 def spark_submit_query(query):
