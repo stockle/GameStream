@@ -6,12 +6,11 @@ from pyspark_cassandra import CassandraSparkContext
 class SparkConnector:
 	def __init__(self):
 		conf = SparkConf() \
-			.setMaster("spark://spark-master:7077") \
+			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
 			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
-			.set('spark.cassandra.auth.password', os.environ['DB_PASS']) \
-			.getOrCreate()
+			.set('spark.cassandra.auth.password', os.environ['DB_PASS'])
 		self.sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
 
