@@ -54,12 +54,12 @@ def construct_query(data):
     return query
 
 def spark_submit_query(query):
-    # users = sdb.load_and_get_table_df("v1", "users")
-    # user.registerTempTable("users")
-    # gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
-    # user.registerTempTable("gameplay_events")
-    # pevents = sdb.load_and_get_table_df("v1", "purchase_events")
-    # user.registerTempTable("purchase_events")
+    users = sdb.load_and_get_table_df("v1", "users")
+    user.registerTempTable("users")
+    gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
+    user.registerTempTable("gameplay_events")
+    pevents = sdb.load_and_get_table_df("v1", "purchase_events")
+    user.registerTempTable("purchase_events")
 
     df = sdb.submit_sql("""
         SELECT * FROM v1.gameplay_events ge
