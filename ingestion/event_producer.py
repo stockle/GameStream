@@ -48,7 +48,7 @@ def create_users(db, users):
 
     qset = []
     for i, user in enumerate(users):
-        min_agn, max_age = get_age_bracket(user['Age'])
+        min_age, max_age = get_age_bracket(user['Age'])
         qset.append((user['UID'], min_age, max_age))
         if i % 100 == 0:
             query = """INSERT INTO users (id, min_age, max_age) VALUES (%s, %s, %s)"""
