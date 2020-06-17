@@ -15,7 +15,6 @@ def produce(generator):
 
     while True:
         event = generator.generate_data()
-        print(partitions_for('events'))
         ack = producer.send(
             event['event_type'],
             event
@@ -51,7 +50,7 @@ def init_db(db):
     db.init_session()
     db.init_keyspace('v1')
 
-def populate_db(db, users)
+def populate_db(db, users):
     create_users(db)
 
     qset = []
