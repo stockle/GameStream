@@ -1,5 +1,6 @@
 import os
 import numpy
+import findspark
 import pandas as pd
 from datetime import datetime
 from pyspark.sql.functions import col, asc
