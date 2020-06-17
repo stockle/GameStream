@@ -7,7 +7,7 @@ from pyspark import SparkContext, SparkConf, SQLContext
 
 class SparkConnector:
 	def __init__(self):
-		findspark.init("/home/ubuntu/server/spark-2.4.5-bin-hadoop2.7")
+		findspark.init()
 		conf = SparkConf() \
 			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \

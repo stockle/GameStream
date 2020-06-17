@@ -6,6 +6,7 @@ from pyspark.sql.functions import col, asc
 from database import connector, spark_connector
 from flask import Flask, Markup, render_template, request
 
+findspark.init()
 sdb = spark_connector.SparkConnector()
 
 app = Flask(__name__)
