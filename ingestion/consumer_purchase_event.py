@@ -1,5 +1,5 @@
 import json
-import EventConsumer
+import event_consumer
 from database import cassandra_connector
 
 def handle_purchase_event(db, event):
@@ -41,7 +41,7 @@ if __name__=="__main__":
     init_db(db)
     create_gameplay_events(db)
 
-    purchase_evcon = EventConsumer.EventConsumer(db,
+    purchase_evcon = event_consumer.EventConsumer(db,
         handle_purchase_event,
         'purchase_event',
         'purchase_event'

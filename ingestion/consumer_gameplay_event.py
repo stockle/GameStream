@@ -1,5 +1,5 @@
 import json
-import EventConsumer
+import event_consumer
 from database import cassandra_connector
 
 def handle_gameplay_event(db, event):
