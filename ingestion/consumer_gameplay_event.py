@@ -37,6 +37,7 @@ def init_db(db):
 
 if __name__=="__main__":
     db = cassandra_connector.DBConnector()
+    init_db(db)
     create_gameplay_events(db)
 
     gameplay_evcon = event_consumer.EventConsumer(db,
