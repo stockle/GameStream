@@ -9,7 +9,7 @@ from flask import Flask, Markup, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-sdb = None
+sdb = spark_connector.SparkConnector()
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
@@ -17,7 +17,6 @@ colors = [
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
 def join_df_tables(gevents, pevents, users, data):
-    sdb = SparkConnector()
     users = sdb.load_and_get_table_df("v1", "users")
     gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
@@ -78,6 +77,4 @@ def handle_form_submit():
     )
 
 if __name__ == '__main__':
-    if not sdb:
-        sdb = spark_connector.SparkConnector()
     app.run(host='0.0.0.0', port=8080)
