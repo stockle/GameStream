@@ -34,7 +34,7 @@ if __name__=="__main__":
 	gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
 	pevents = sdb.load_and_get_table_df("v1", "purchase_events")
 
-	df = gevents.join(pevents)
+	df = gevents.crossJoin(pevents)
 
 	df.show()
 
