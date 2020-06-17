@@ -1,8 +1,9 @@
 # TODO
 ## Spark
- - [ ] Create PySpark script
-  - [x] Connector from PySpark to Cassandra
-    - [ ] Execute first SparkSQL statement to join `gameplay_events` with `purchase_events`
+ - [x] Create PySpark script
+ - [x] Connector from PySpark to Cassandra
+ - [x] Execute first SparkSQL statement to join `gameplay_events` with `purchase_events`
+ - [ ] Debug `Exception: Java gateway process exited before sending its port number`
 
 ## Kafka
  - [ ] Create two more nodes
@@ -15,8 +16,8 @@
 
 ## Data
  - [ ] Bucket ages into age brackets instead of actual age
-  - [ ] Determine a data model that supports age brackets in the database and when presenting the data
-   - Age should be semi-anonimized before it gets to the database
+ - [ ] Determine a data model that supports age brackets in the database and when presenting the data
+  - Age should be semi-anonimized before it gets to the database
 
 ## Repo
  - [ ] Break out scripts into their respective folders
