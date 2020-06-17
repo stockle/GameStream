@@ -2,9 +2,9 @@ import json
 import logging
 from random import seed
 from datetime import datetime
-from database import connector
 from kafka import KafkaProducer
 import event_producer, data_generator
+from database import cassandra_connector
 
 def produce(generator):
     bootstrap_servers = ['localhost:9092']
