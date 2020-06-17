@@ -8,15 +8,13 @@ from pyspark import SparkContext, SparkConf, SQLContext
 class SparkConnector:
 	def __init__(self):
 		findspark.init()
-		conf = SparkConf() \
-			.setMaster("local[*]") \
-			.setAppName('SparkCassandraAnalytics') \
-			.set('spark.jars.packages', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
-			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
-			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
-			.set('spark.cassandra.auth.password', os.environ['DB_PASS']) \
-			.set('spark.executor.memory', '8g') \
-			.set('spark.driver.memory','4g')
+		conf = SparkSession.builder \
+			.master("local[*]") \
+			.appName('SparkCassandraAnalytics') \
+			.config('spark.jars.packages', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
+			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
+			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
+			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])
 		sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
 
