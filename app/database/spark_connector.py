@@ -27,3 +27,7 @@ class SparkConnector:
 			.options(table=table_name, keyspace=keys_space_name) \
 			.load()
 		return table_df
+
+if __name__=="__main__":
+	sc = SparkConnector()
+	sc.load_and_get_table_df('v1', 'users').show()
