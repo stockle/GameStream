@@ -36,6 +36,12 @@ if __name__=="__main__":
 
 	df = gevents.join(pevents).join(users, users.id == gevents.user_id)
 
+	data = {
+		'game_name': 'Fallout trilogy',
+		'system_pc': True,
+		'age_bracket_from': 25
+	}
+
 	# join dates
 	if 'datetime_from' in data:
 		df = gevents.where(df.event_time > datetime(data['datetime_from']))
@@ -46,11 +52,11 @@ if __name__=="__main__":
 
 	# join system
 	if 'system_pc' in data and 'system_ps4' in data:
-		df.where(df.platform == data['system_pc'] | df.platform == data['system_ps4'])
+		df.where(df.platform == 'PC' | df.platform == 'PS4')
 	elif 'system_ps4' in data:
-		df.where(df.platform == data['system_ps4'])
+		df.where(df.platform == 'PC')
 	elif 'system_pc' in data:
-		df.where(df.platform == data['system_pc'])
+		df.where(df.platform == 'PS4')
 
 	if 'age_bracket_from' in data:
 		df.where(df.age > data['age_bracket_from'])
