@@ -71,7 +71,7 @@ if __name__=="__main__":
     )
     
     datageni = data_generator.DataGenerator(101)
-    db = connector.DBConnector()
+    db = cassandra_connector.DBConnector()
     kafka_producer = KafkaProducer()
 
     init_db(db)
