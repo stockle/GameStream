@@ -29,7 +29,32 @@ class SparkConnector:
 		return table_df
 
 if __name__=="__main__":
-	sc = SparkConnector()
+	sdb = SparkConnector()
 	users = sdb.load_and_get_table_df("v1", "users").show()
 	gevents = sdb.load_and_get_table_df("v1", "gameplay_events").show()
 	pevents = sdb.load_and_get_table_df("v1", "purchase_events").show()
+
+	df = gevents.join(pevents).join(users, users.id == gevents.user_id)
+
+	# join dates
+	if 'datetime_from' in data:
+		df = gevents.where(df.event_time > datetime(data['datetime_from']))
+	if 'datetime_to' in data:
+		df = gevents.where(df.event_time < datetime(data['datetime_to']))
+	if 'game_name' in data:
+		df = gevents.where(col('game').like(data['game_name']))
+
+	# join system
+	if 'system_pc' in data and 'system_ps4' in data:
+		df.where(df.platform == data['system_pc'] | df.platform == data['system_ps4'])
+	elif 'system_ps4' in data:
+		df.where(df.platform == data['system_ps4'])
+	elif 'system_pc' in data:
+		df.where(df.platform == data['system_pc'])
+
+	if 'age_bracket_from' in data:
+		df.where(df.age > data['age_bracket_from'])
+	if 'age_bracket_to' in data:
+		df.where(df.age < data['age_bracket_to'])
+
+	df.show()
