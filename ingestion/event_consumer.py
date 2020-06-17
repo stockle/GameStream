@@ -40,7 +40,7 @@ class EventConsumer:
                     + self.group
                     + '):', event
                 )
-                self.handler(db, event)
+                self.handler(self.db, event)
         except KeyboardInterrupt:
             sys.exit()
 
