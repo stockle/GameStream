@@ -4,8 +4,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf, SQLContext
 
-print(os.environ)
-
 class SparkConnector:
 	def __init__(self):
 		findspark.init()
@@ -43,32 +41,36 @@ if __name__=="__main__":
 	df.show()
 
 	data = {
-		'game_name': 'Fallout Trilogy',
+		'game_name': 'Fal',
 		'system_pc': True,
 		'age_bracket_from': 5
 	}
 
-	df.show()
+	df = sdb.submit_sql("""
+			SELECT * FROM v1.users LIMIT 10;
+		""")
 
-	# join dates
-	if 'datetime_from' in data:
-		df = gevents.where(df.event_time > datetime(data['datetime_from']))
-	if 'datetime_to' in data:
-		df = gevents.where(df.event_time < datetime(data['datetime_to']))
-	if 'game_name' in data:
-		df = gevents.where(col('game').like(data['game_name']))
+	# df.show()
 
-	df.show()
+	# # join dates
+	# if 'datetime_from' in data:
+	# 	df = gevents.where(df.event_time > datetime(data['datetime_from']))
+	# if 'datetime_to' in data:
+	# 	df = gevents.where(df.event_time < datetime(data['datetime_to']))
+	# if 'game_name' in data:
+	# 	df = gevents.where(col('game').like(data['game_name']))
 
-	# join system
-	if 'system_pc' in data and 'system_ps4' in data:
-		df.where(df.platform == 'PC' | df.platform == 'PS4')
-	elif 'system_ps4' in data:
-		df.where(df.platform == 'PC')
-	elif 'system_pc' in data:
-		df.where(df.platform == 'PS4')
+	# df.show()
 
-	df.show()
+	# # join system
+	# if 'system_pc' in data and 'system_ps4' in data:
+	# 	df.where(df.platform == 'PC' | df.platform == 'PS4')
+	# elif 'system_ps4' in data:
+	# 	df.where(df.platform == 'PC')
+	# elif 'system_pc' in data:
+	# 	df.where(df.platform == 'PS4')
+
+	# df.show()
 
 	# if 'age_bracket_from' not in data:
 	# 	data['age_bracket_from'] = 13
