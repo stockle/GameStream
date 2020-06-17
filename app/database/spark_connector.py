@@ -15,8 +15,8 @@ class SparkConnector:
 			.set('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.set('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.set('spark.cassandra.auth.password', os.environ['DB_PASS']) \
-			.set('spark.executor.memory', '3g') \
-			.set('spark.driver.memory','3g')\
+			.set('spark.executor.memory', '9g') \
+			.set('spark.driver.memory','3g')
 		sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
 
