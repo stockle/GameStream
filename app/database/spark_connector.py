@@ -40,7 +40,7 @@ if __name__=="__main__":
 	data = {
 		'game_name': 'Fallout trilogy',
 		'system_pc': True,
-		'age_bracket_from': 25
+		'age_bracket_from': '25'
 	}
 
 	# join dates
@@ -60,9 +60,9 @@ if __name__=="__main__":
 		df.where(df.platform == 'PS4')
 
 	if 'age_bracket_from' not in data:
-		data['age_bracket_from'] = 13
+		data['age_bracket_from'] = '13'
 	if 'age_bracket_to' not in data:
-		data['age_bracket_to'] = 75
-	df = df.join(users, users.age > data['age_bracket_from'] & users.age < data['age_bracket_to'] & users.id == df.user_id)
+		data['age_bracket_to'] = '75'
+	df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
 
 	df.show()
