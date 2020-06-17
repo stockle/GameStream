@@ -6,10 +6,10 @@ from pyspark.sql.functions import col, asc
 from database import connector, spark_connector
 from flask import Flask, Markup, render_template, request
 
+sdb = spark_connector.SparkConnector()
+
 app = Flask(__name__)
 app.debug = True
-
-sdb = spark_connector.SparkConnector()
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
@@ -38,16 +38,19 @@ def join_df_tables(gevents, pevents, users, data):
         df.where(df.platform == 'PC')
     elif 'system_pc' in data:
         df.where(df.platform == 'PS4')
+
+    # if 'age_bracket_from' not in data:
+    #   data['age_bracket_from'] = 13
+    # if 'age_bracket_to' not in data:
+    #   data['age_bracket_to'] = 75
+    # df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
     
     return df
 
 def spark_submit_query(data):
     users = sdb.load_and_get_table_df("v1", "users")
-    # user.registerTempTable("users")
     gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
-    # user.registerTempTable("gameplay_events")
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
-    # user.registerTempTable("purchase_events")
 
     df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
 
@@ -60,7 +63,7 @@ def spark_submit_query(data):
 
     return labels, values, {}
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["POST"])
 def handle_form_submit():
     form_data = request.form
     # app.logger.info('form submitted:', form_data)

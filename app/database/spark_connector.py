@@ -43,7 +43,7 @@ if __name__=="__main__":
 	data = {
 		'game_name': 'Fallout Trilogy',
 		'system_pc': True,
-#		'age_bracket_from': 5
+		'age_bracket_from': 5
 	}
 
 	df.show()
