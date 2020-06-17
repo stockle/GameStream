@@ -36,7 +36,7 @@ if __name__=="__main__":
 
 	df = gevents.join(pevents)
 
-        df.show()
+	df.show()
 
 	data = {
 		'game_name': 'Fallout Trilogy',
