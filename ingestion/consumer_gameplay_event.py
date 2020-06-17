@@ -30,6 +30,11 @@ def create_gameplay_events(db):
     """
     db.execute(query)
 
+def init_db(db):
+    db.init_cluster()
+    db.init_session()
+    db.init_keyspace('v1')
+
 if __name__=="__main__":
     db = connector.DBConnector()
     create_purchase_events(db)

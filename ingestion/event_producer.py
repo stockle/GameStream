@@ -34,7 +34,7 @@ def get_age_bracket(age):
         max_age = min_age + 9
     return min_age, max_age
 
-def create_users(db, users):
+def create_users(db):
     query = """
         DROP TABLE IF EXISTS users
     """
@@ -46,6 +46,14 @@ def create_users(db, users):
     """
     db.execute(query)
 
+def init_db(db):
+    db.init_cluster()
+    db.init_session()
+    db.init_keyspace('v1')
+
+def populate_db(db, users)
+    create_users(db)
+
     qset = []
     for i, user in enumerate(users):
         min_age, max_age = get_age_bracket(user['Age'])
@@ -54,11 +62,6 @@ def create_users(db, users):
             query = """INSERT INTO users (id, min_age, max_age) VALUES (%s, %s, %s)"""
             db.insert(query, qset)
             qset = []
-
-def init_db(db):
-    db.init_cluster()
-    db.init_session()
-    db.init_keyspace('v1')
 
 if __name__=="__main__":
     seed()
@@ -76,7 +79,6 @@ if __name__=="__main__":
 
     init_db(db)
     users = datageni.get_users()
-    create_users(db, users)
-
     populate_db(db, users)
+
     produce(datageni)
