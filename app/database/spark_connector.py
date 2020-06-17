@@ -35,7 +35,7 @@ if __name__=="__main__":
 	gevents = sdb.load_and_get_table_df("v1", "gameplay_events").show()
 	pevents = sdb.load_and_get_table_df("v1", "purchase_events").show()
 
-	df = gevents.join(pevents).join(users, users.id == gevents.user_id)
+	df = gevents.join(pevents)
 
 	data = {
 		'game_name': 'Fallout trilogy',
@@ -59,9 +59,10 @@ if __name__=="__main__":
 	elif 'system_pc' in data:
 		df.where(df.platform == 'PS4')
 
-	if 'age_bracket_from' in data:
-		df.where(df.age > data['age_bracket_from'])
-	if 'age_bracket_to' in data:
-		df.where(df.age < data['age_bracket_to'])
+	if 'age_bracket_from' not in data:
+		data['age_bracket_from'] = 13
+	if 'age_bracket_to' not in data:
+		data['age_bracket_to'] = 75
+	df = df.join(users, users.age > data['age_bracket_from'] & users.age < data['age_bracket_to'] & users.id == df.user_id)
 
 	df.show()
