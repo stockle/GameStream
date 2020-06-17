@@ -9,7 +9,7 @@ from flask import Flask, Markup, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-sdb = spark_connector.SparkConnector()
+sdb = None
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
@@ -78,4 +78,6 @@ def handle_form_submit():
     )
 
 if __name__ == '__main__':
+    if not sdb:
+        sdb = spark_connector.SparkConnector()
     app.run(host='0.0.0.0', port=8080)
