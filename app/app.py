@@ -29,16 +29,17 @@ def join_df_tables(gevents, pevents, users, data):
 
     # join system
     if 'system_pc' in data and 'system_ps4' in data:
-        df.where(df.platform == data['system_pc'] | df.platform == data['system_ps4'])
+        df.where(df.platform == 'PC' | df.platform == 'PS4')
     elif 'system_ps4' in data:
-        df.where(df.platform == data['system_ps4'])
+        df.where(df.platform == 'PC')
     elif 'system_pc' in data:
-        df.where(df.platform == data['system_pc'])
+        df.where(df.platform == 'PS4')
 
-    if 'age_bracket_from' in data:
-        df.where(df.age > data['age_bracket_from'])
-    if 'age_bracket_to' in data:
-        df.where(df.age < data['age_bracket_to'])
+    if 'age_bracket_from' not in data:
+        data['age_bracket_from'] = '13'
+    if 'age_bracket_to' not in data:
+        data['age_bracket_to'] = '75'
+    df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
 
     return query
 
