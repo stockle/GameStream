@@ -1,4 +1,5 @@
 import os
+from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext, SparkSession
 from pyspark_cassandra import CassandraSparkContext
