@@ -29,4 +29,6 @@ class SparkConnector:
 
 if __name__=="__main__":
 	sc = SparkConnector()
-	sc.load_and_get_table_df('v1', 'users').show()
+    users = sdb.load_and_get_table_df("v1", "users").show()
+    gevents = sdb.load_and_get_table_df("v1", "gameplay_events").show()
+    pevents = sdb.load_and_get_table_df("v1", "purchase_events").show()
