@@ -6,10 +6,10 @@ from pyspark.sql.functions import col, asc
 from database import connector, spark_connector
 from flask import Flask, Markup, render_template, request
 
+sdb = spark_connector.SparkConnector()
+
 app = Flask(__name__)
 app.debug = True
-
-sdb = spark_connector.SparkConnector()
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
