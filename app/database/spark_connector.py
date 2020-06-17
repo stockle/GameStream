@@ -15,6 +15,7 @@ class SparkConnector:
 			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])
+			.getOrCreate()
 		sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
 
