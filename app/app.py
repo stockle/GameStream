@@ -17,7 +17,12 @@ colors = [
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
 def join_df_tables(gevents, pevents, users, data):
-    df = gevents.join(pevents).join(users, users.id == gevents.user_id)
+    sdb = SparkConnector()
+    users = sdb.load_and_get_table_df("v1", "users")
+    gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
+    pevents = sdb.load_and_get_table_df("v1", "purchase_events")
+
+    df = gevents.crossJoin(pevents)
 
     # join dates
     if 'datetime_from' in data:
@@ -34,14 +39,8 @@ def join_df_tables(gevents, pevents, users, data):
         df.where(df.platform == 'PC')
     elif 'system_pc' in data:
         df.where(df.platform == 'PS4')
-
-    if 'age_bracket_from' not in data:
-        data['age_bracket_from'] = '13'
-    if 'age_bracket_to' not in data:
-        data['age_bracket_to'] = '75'
-    df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
-
-    return query
+    
+    return df
 
 def spark_submit_query(data):
     users = sdb.load_and_get_table_df("v1", "users")
