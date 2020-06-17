@@ -1,13 +1,16 @@
 import os
+import findspark
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf, SQLContext
+
 
 class SparkConnector:
 	def __init__(self):
 		# os.environ['PYSPARK_SUBMIT_ARGS'] = f"""
   #       	--packages 
   #   	"""
+		findspark.init("/home/ubuntu/server/spark-2.4.5-bin-hadoop2.7")
 		conf = SparkConf() \
 			.setMaster("local[*]") \
 			.setAppName('SparkCassandraAnalytics') \
