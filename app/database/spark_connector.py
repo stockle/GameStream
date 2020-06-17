@@ -4,6 +4,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf, SQLContext
 
+print(os.environ)
 
 class SparkConnector:
 	def __init__(self):
