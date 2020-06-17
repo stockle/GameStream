@@ -15,8 +15,10 @@ class SparkConnector:
 			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS']) \
+			.config('spark.executor.memory', '8g') \
+			.config('spark.driver.memory','4g') \
 			.getOrCreate()
-		#sc = SparkContext(conf=conf)
+		# sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
 
 	def submit_sql(self, query):
