@@ -65,20 +65,25 @@ def where_daterange(form):
 
 def construct_query(form):
     users = "SELECT * FROM 'users'"
-    users += construct_user_query(form)
 
     gevents = 'SELECT * FROM gameplay_events'
     pevents = 'SELECT * FROM purchase_events'
+    if not form:
+        users += ' LIMIT 1000'
+        gevents += ' LIMIT 1000'
+        pevents += ' LIMIT 1000'
+    else:
+        users += construct_user_query(form)
 
-    where = where_system(form)
-    gevents += where
-    pevents += where
+        where = where_system(form)
+        gevents += where
+        pevents += where
 
-    where = where_daterange(form)
-    gevents += where
-    pevents += where
+        where = where_daterange(form)
+        gevents += where
+        pevents += where
 
-    return (users, gevents, pevents)
+    return (users + ';', gevents + ';', pevents + ';')
 
 def submit_query(queries):
     print(queries)
@@ -93,8 +98,8 @@ def submit_query(queries):
 
     return {
         'user_demographics': users,
-        'gameplay_events': gevents,
-        'purchase_events': pevents
+        'gameplay_values': gevents,
+        'purchase_values': pevents
     }
 
 @app.route('/')
@@ -110,7 +115,7 @@ def handle_form_submit():
     data = submit_query(queries)
     
     return render_template(
-        'form.html',
+        'data.html',
         title='PC Users per 100ms',
         max=max(data['gameplay_values']['count'].values) + 1,
         labels=data['gameplay_values']['event_time'].values,
