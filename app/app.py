@@ -77,7 +77,7 @@ def activate_job():
 def home():
     return render_template('index.html')
 
-@app.route('/data', methods=["POST"])
+@app.route('/data', methods=["GET"])
 def handle_form_submit():
     form_data = request.form
     # app.logger.info('form submitted:', form_data)
