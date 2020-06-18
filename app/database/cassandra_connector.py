@@ -10,7 +10,8 @@ class DBConnector:
 		self.session = self.init_session(keyspace)
 
 	def __del__(self):
-		self.cluster.shutdown()
+		if self.cluster:
+			self.cluster.shutdown()
 
 	def init_cluster(self):
 		ap = PlainTextAuthProvider(
@@ -20,9 +21,8 @@ class DBConnector:
 		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap, idle_heartbeat_interval=DB_IDLE)
 
 	def init_session(self, keyspace):
-		if not self.session:
-			self.init_cluster()
-			self.session = self.cluster.connect()
+		self.init_cluster()
+		self.session = self.cluster.connect()
 		self.init_keyspace(keyspace)
 
 	def init_keyspace(self, keyspace):
