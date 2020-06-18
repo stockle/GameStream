@@ -21,7 +21,7 @@ def construct_user_query(form):
     where = ''
     
     if 'age_bracket_from' in form or 'age_bracket_to' in form:
-        where += 'WHERE '
+        where += ' WHERE '
         if 'age_bracket_from' in form:
             where += f"""min_age > {form['age_bracket_from']} """
             if 'age_bracket_to' in form:
@@ -35,14 +35,14 @@ def where_system(form):
     where = ''
     
     if 'system_pc' in form and 'system_ps4' in form:
-        where = f"""WHERE platform = {form['system_pc']}
-                    OR platform = {form['system_ps4']}
+        where = f""" WHERE platform = 'PC'
+                    OR platform = 'PS4'
                 """
     elif 'system_pc' in form:
-        where = f"WHERE platform = {form['system_pc']}"
+        where = f" WHERE platform = 'PC'"
     elif 'system_ps4' in form:
-        where = f"WHERE platform = {form['system_ps4']}"
-    
+        where = f" WHERE platform = 'PS4'"
+
     return where
 
 def where_daterange(form):
