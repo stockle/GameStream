@@ -51,11 +51,11 @@ def where_daterange(form):
     if 'datetime_from' in form or 'datetime_to' in form:
         where += ' WHERE '
         if 'datetime_from' in form:
-            where += f" event_time > {datetime(form['datetime_from'])}"
+            where += f" event_time > {form['datetime_from']}"
         if 'datetime_to' in form:
             if where != ' WHERE ':
                 where += ' AND ' 
-            where += f" event_time < {datetime(form['datetime_to'])}"
+            where += f" event_time < {form['datetime_to']}"
     if 'game_name' in form:
         if where != '':
             where += ' AND ' 
