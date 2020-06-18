@@ -2,7 +2,7 @@ import os
 import numpy
 import pandas as pd
 from datetime import datetime
-from formbase import cassandra_connector
+from database import cassandra_connector
 from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
@@ -82,9 +82,9 @@ def construct_query(form):
     return (gevents, pevents, users)
 
 def submit_query(queries):
-    users = sdb.load_and_get_table_df("v1", "users")
-    gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
-    pevents = sdb.load_and_get_table_df("v1", "purchase_events")
+    users = db.load_and_get_table_df("v1", "users")
+    gevents = db.load_and_get_table_df("v1", "gameplay_events")
+    pevents = db.load_and_get_table_df("v1", "purchase_events")
 
     gevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
     pevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
