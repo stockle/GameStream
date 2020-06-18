@@ -65,20 +65,25 @@ def where_daterange(form):
 
 def construct_query(form):
     users = "SELECT * FROM 'users'"
-    users += construct_user_query(form)
 
     gevents = 'SELECT * FROM gameplay_events'
     pevents = 'SELECT * FROM purchase_events'
+    if not form:
+        users += ' LIMIT 1000'
+        gevents += ' LIMIT 1000'
+        pevents += ' LIMIT 1000'
+    else:
+        users += construct_user_query(form)
 
-    where = where_system(form)
-    gevents += where
-    pevents += where
+        where = where_system(form)
+        gevents += where
+        pevents += where
 
-    where = where_daterange(form)
-    gevents += where
-    pevents += where
+        where = where_daterange(form)
+        gevents += where
+        pevents += where
 
-    return (users, gevents, pevents)
+    return (users + ';', gevents + ';', pevents + ';')
 
 def submit_query(queries):
     print(queries)
