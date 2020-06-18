@@ -81,7 +81,10 @@ def construct_query(form):
     return (users, gevents, pevents)
 
 def submit_query(queries):
-    users = pd.DataFrame(list(db.select(queries[0])))
+    print(queries)
+
+    users = None
+    # users = pd.DataFrame(list(db.select(queries[0])))
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
@@ -89,7 +92,7 @@ def submit_query(queries):
     pevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
 
     return {
-        'users': users,
+        'user_demographics': users,
         'gameplay_events': gevents,
         'purchase_events': pevents
     }
