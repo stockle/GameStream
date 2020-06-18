@@ -15,11 +15,12 @@ def produce(generator):
 
     while True:
         event = generator.generate_data()
+        print(event['event_type'])
         ack = producer.send(
             event['event_type'],
             event
         )
-        logging.info('Sent message ('+str(event['event_type'])+'):', str(ack.get().partition))
+        # logging.info('Sent message ('+str(event['event_type'])+'):', str(ack.get().partition))
 
 def get_age_bracket(age):
     min_age = 0
@@ -72,7 +73,7 @@ if __name__=="__main__":
         level=logging.DEBUG
     )
     
-    datageni = data_generator.DataGenerator(101)
+    datageni = data_generator.DataGenerator(200)
     db = cassandra_connector.DBConnector()
     kafka_producer = KafkaProducer()
 
