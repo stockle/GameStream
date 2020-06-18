@@ -1,10 +1,13 @@
 import json
 import logging
+import threading
 from random import seed
 from datetime import datetime
 from kafka import KafkaProducer
 import event_producer, data_generator
 from database import cassandra_connector
+
+NUM_THREADS = 10
 
 def produce(generator):
     bootstrap_servers = ['localhost:9092']
@@ -20,7 +23,6 @@ def produce(generator):
             event['event_type'],
             event
         )
-        # logging.info('Sent message ('+str(event['event_type'])+'):', str(ack.get().partition))
 
 def get_age_bracket(age):
     min_age = 0
@@ -81,4 +83,5 @@ if __name__=="__main__":
     users = datageni.get_users()
     populate_db(db, users)
 
+    threads = [threading.Thread(target=produce, args=(datageni,)) for i in range(NUM_THREADS)]
     produce(datageni)
