@@ -3,7 +3,6 @@ import findspark
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf, SQLContext
-
 class SparkConnector:
 	def __init__(self):
 		# findspark.init()
@@ -15,7 +14,7 @@ class SparkConnector:
 			.config('spasprk.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])  \
 			.config('spark.executor.memory', '15g') \
-			.config('spark.driver.memory','6g') \
+                        .config('spark.driver.memory','6g') \
 			.getOrCreate()
 		self.sqlContext = SQLContext(sc)
 		self.sqlContext.setConf('spark.sql.shuffle.partitions', '10')
