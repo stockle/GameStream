@@ -111,6 +111,8 @@ def home():
 def handle_form_submit():
     form_data = request.form
 
+    print(form_data)
+
     queries = construct_query(form_data)
     data = submit_query(queries)
 
