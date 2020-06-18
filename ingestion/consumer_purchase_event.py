@@ -43,7 +43,6 @@ if __name__=="__main__":
 
     purchase_evcon = event_consumer.EventConsumer(db,
         handle_purchase_event,
-        'purchase_event',
         'purchase_event'
     )
 

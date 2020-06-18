@@ -42,7 +42,6 @@ if __name__=="__main__":
 
     gameplay_evcon = event_consumer.EventConsumer(db,
         handle_gameplay_event,
-        'gameplay_event',
         'gameplay_event'
     )
 
