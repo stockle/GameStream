@@ -4,13 +4,8 @@ import logging
 from datetime import datetime
 from kafka import KafkaConsumer
 
-def decode_datetime(obj):
-    if '__datetime__' in obj:
-        obj = datetime.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S.%f")
-    return obj
-
 class EventConsumer:
-    def __init__(self, db, handler, topic='topic', group='group_1'):
+    def __init__(self, db, handler, topic='topic', group=None):
         self.db = db
         self.group = group
         self.topic = topic
@@ -21,6 +16,7 @@ class EventConsumer:
         consumer = KafkaConsumer(
             self.topic,
             group_id=self.group,
+            enable_auto_commit=True,
             bootstrap_servers=bootstrap_servers,
             auto_offset_reset='earliest',
             value_deserializer=lambda m: json.loads(m.decode('ascii'))
@@ -32,15 +28,17 @@ class EventConsumer:
             level=logging.DEBUG
         )
         try:
+            consumer.poll() 
+            consumer.seek_to_end()
             for message in consumer:
                 event = message.value
+                print(event)
                 logging.info(
                     'Received message ('
                     + self.topic + '/'
-                    + self.group
                     + '):', event
                 )
-                self.handler(db, event)
+                self.handler(self.db, event)
         except KeyboardInterrupt:
             sys.exit()
 

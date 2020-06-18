@@ -37,7 +37,6 @@ class DBConnector:
 		print(self.session.execute(query))
 
 	def insert(self, query, data):
-		print(query)
 		batch = BatchStatement()
 		for d in data:
 			batch.add(query, d)

@@ -2,7 +2,7 @@ import csv
 import uuid
 import psutil
 from datetime import datetime, timedelta
-from random import gauss, seed, randint, uniform, choice, random, rand_range
+from random import gauss, seed, randint, uniform, choice, random
 
 GAME_NAMES_PATH = "./data/vgsales.csv"
 

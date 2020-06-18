@@ -17,8 +17,8 @@ class SparkConnector:
 			.config('spark.executor.memory', '8g') \
 			.config('spark.driver.memory','4g') \
 			.getOrCreate()
-		# sc = SparkContext(conf=conf)
 		self.sqlContext = SQLContext(sc)
+		self.sqlContext.setConf('spark.sql.shuffle.partitions', '10')
 
 	def submit_sql(self, query):
 		return self.sqlContext.sql(query).collect()
@@ -46,29 +46,25 @@ if __name__=="__main__":
 		'age_bracket_from': 5
 	}
 
-	df = sdb.submit_sql("""
-			SELECT * FROM v1.users LIMIT 10;
-		""")
+	df.show()
 
-	# df.show()
+	# join dates
+	if 'datetime_from' in data:
+		df = gevents.where(df.event_time > datetime(data['datetime_from']))
+	if 'datetime_to' in data:
+		df = gevents.where(df.event_time < datetime(data['datetime_to']))
+	if 'game_name' in data:
+		df = gevents.where(col('game').like(data['game_name']))
 
-	# # join dates
-	# if 'datetime_from' in data:
-	# 	df = gevents.where(df.event_time > datetime(data['datetime_from']))
-	# if 'datetime_to' in data:
-	# 	df = gevents.where(df.event_time < datetime(data['datetime_to']))
-	# if 'game_name' in data:
-	# 	df = gevents.where(col('game').like(data['game_name']))
+	df.show()
 
-	# df.show()
-
-	# # join system
-	# if 'system_pc' in data and 'system_ps4' in data:
-	# 	df.where(df.platform == 'PC' | df.platform == 'PS4')
-	# elif 'system_ps4' in data:
-	# 	df.where(df.platform == 'PC')
-	# elif 'system_pc' in data:
-	# 	df.where(df.platform == 'PS4')
+	# join system
+	if 'system_pc' in data and 'system_ps4' in data:
+		df.where(df.platform == 'PC' | df.platform == 'PS4')
+	elif 'system_ps4' in data:
+		df.where(df.platform == 'PC')
+	elif 'system_pc' in data:
+		df.where(df.platform == 'PS4')
 
 	# df.show()
 
