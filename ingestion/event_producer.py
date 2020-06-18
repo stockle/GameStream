@@ -84,4 +84,6 @@ if __name__=="__main__":
     populate_db(db, users)
 
     threads = [threading.Thread(target=produce, args=(datageni,)) for i in range(NUM_THREADS)]
+    for t in threads:
+        t.start()
     produce(datageni)
