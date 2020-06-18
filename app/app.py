@@ -6,7 +6,7 @@ from pyspark.sql.functions import col, asc
 from database import connector, spark_connector
 from flask import Flask, Markup, render_template, request
 
-sdb = spark_connector.SparkConnector()
+sdb = None
 
 app = Flask(__name__)
 app.debug = True
@@ -62,6 +62,15 @@ def spark_submit_query(data):
     print(labels)
 
     return labels, values, {}
+
+
+@app.before_first_request
+def activate_job():
+    def run_job():
+        sdb = spark_connector.SparkConnector()
+
+    thread = threading.Thread(target=run_job)
+    thread.start()
 
 @app.route('/', methods=["POST"])
 def handle_form_submit():
