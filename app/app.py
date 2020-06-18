@@ -3,7 +3,7 @@ import numpy
 import pandas as pd
 from datetime import datetime
 from pyspark.sql.functions import col, asc
-from database import connector, spark_connector
+from database import spark_connector
 from flask import Flask, Markup, render_template, request
 
 sdb = None
