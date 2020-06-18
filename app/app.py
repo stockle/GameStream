@@ -107,7 +107,7 @@ def home():
     print(db)
     return render_template('index.html')
 
-@app.route('/data', methods=["GET"])
+@app.route('/data', methods=["GET", "POST"])
 def handle_form_submit():
     form_data = request.form
 
