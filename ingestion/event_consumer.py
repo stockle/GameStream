@@ -16,6 +16,7 @@ class EventConsumer:
         consumer = KafkaConsumer(
             self.topic,
             group_id=self.group,
+            enable_auto_commit=True,
             bootstrap_servers=bootstrap_servers,
             auto_offset_reset='earliest',
             value_deserializer=lambda m: json.loads(m.decode('ascii'))
@@ -27,6 +28,8 @@ class EventConsumer:
             level=logging.DEBUG
         )
         try:
+            consumer.poll() 
+            consumer.seek_to_end()
             for message in consumer:
                 event = message.value
                 print(event)
