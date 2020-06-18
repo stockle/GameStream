@@ -6,7 +6,7 @@ DB_IDLE = 10
 
 class DBConnector:
 	def __init__(self, keyspace='v1'):
-		self.cluster = None
+		self.cluster = self.init_cluster()
 		self.session = self.init_session(keyspace)
 
 	def __del__(self):
@@ -21,7 +21,6 @@ class DBConnector:
 		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap, idle_heartbeat_interval=DB_IDLE)
 
 	def init_session(self, keyspace):
-		self.init_cluster()
 		self.session = self.cluster.connect()
 		self.init_keyspace(keyspace)
 
