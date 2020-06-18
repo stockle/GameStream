@@ -7,7 +7,7 @@ from pyspark import SparkContext, SparkConf, SQLContext
 class SparkConnector:
 	def __init__(self):
 		# findspark.init()
-		sc = SparkConf() \
+		sc = SparkSession.builder \
 			.master("local[*]") \
 			.appName('SCA') \
 			.config('spark.jars.packages', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
