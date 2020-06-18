@@ -2,94 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>{{ title }}</title>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+  <title>GameStream</title>
 </head>
 
 <body>
-	<center>
-		<form action="{{ url_for('handle_form_submit') }}" method="post">
-			<label for="game_name">Game Name</label>
-			<input type="text" id="game_name" value="Fallout Trilogy"/>
-			
-			<label for="system_pc">PC</label>
-			<input type="checkbox" id="system_pc"/>
-
-			<label for="system_ps4">PS4</label>
-			<input type="checkbox" id="system_ps4"/>
-
-			<label for="age_bracket_from">Age Group</label>
-			<input type="number" id="age_bracket_from" name="quantity" min="13" max="31">
-			<input type="number" id="age_bracket_to" name="quantity" min="31" max="75">
-
-			<label for="datetime_from">From</label>
-			<input type="datetime-local" id="datetime_from">
-			<label for="datetime_to">To</label>
-			<input type="datetime-local" id="datetime_to">
-
-			<input type="button" value="submit"/>
-		</form>
-	</center>
-
-  <center>
-    <h1>{{ title }}</h1>
-
-    <canvas id="chart" width="600" height="400"></canvas>
-    <script>
-
-      // bar chart data
-      var barData = {
-        labels : [
-          {% for item in labels %}
-            "{{ item }}",
-          {% endfor %}
-        ],
-
-        datasets : [{
-          fillColor: "rgba(151,187,205,0.2)",
-          strokeColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          bezierCurve : false,
-          data : [
-	    	{% for item in values %}
-              {{ item }},
-            {% endfor %}]
-          }
-	]
-      }
-
-      Chart.defaults.global.animationSteps = 50;
-      Chart.defaults.global.tooltipYPadding = 16;
-      Chart.defaults.global.tooltipCornerRadius = 0;
-      Chart.defaults.global.tooltipTitleFontStyle = "normal";
-      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
-      Chart.defaults.global.animationEasing = "easeOutBounce";
-      Chart.defaults.global.responsive = false;
-      Chart.defaults.global.scaleLineColor = "black";
-      Chart.defaults.global.scaleFontSize = 16;
-
-      // get bar chart canvas
-      var mychart = document.getElementById("chart").getContext("2d");
-
-      steps = 10
-      max = {{ max }}
-      // draw bar chart
-      var LineChartDemo = new Chart(mychart).Line(barData, {
-        scaleOverride: true,
-        scaleSteps: steps,
-        scaleStepWidth: Math.ceil(max / steps),
-        scaleStartValue: 0,
-        scaleShowVerticalLines: true,
-        scaleShowGridLines : true,
-        barShowStroke : true,
-        scaleShowLabels: true,
-        bezierCurve: false,
-      });
-
-    </script>
-  </center>
+	<p><a href="{{ url_for('data') }}">Data</a></p>
 </body>
-</html>
