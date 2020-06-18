@@ -2,11 +2,11 @@ import os
 import numpy
 import pandas as pd
 from datetime import datetime
-from database import spark_connector
+from formbase import cassandra_connector
 from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
-sdb = None
+db = None
 
 print(os.environ)
 
@@ -18,77 +18,109 @@ colors = [
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
-def join_df_tables(gevents, pevents, users, data):
-    users = sdb.load_and_get_table_df("v1", "users")
-    gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
-    pevents = sdb.load_and_get_table_df("v1", "purchase_events")
-
-    df = gevents.crossJoin(pevents)
-
-    # join dates
-    if 'datetime_from' in data:
-        df = gevents.where(df.event_time > datetime(data['datetime_from']))
-    if 'datetime_to' in data:
-        df = gevents.where(df.event_time < datetime(data['datetime_to']))
-    if 'game_name' in data:
-        df = gevents.where(col('game').like(data['game_name']))
-
-    # join system
-    if 'system_pc' in data and 'system_ps4' in data:
-        df.where(df.platform == 'PC' | df.platform == 'PS4')
-    elif 'system_ps4' in data:
-        df.where(df.platform == 'PC')
-    elif 'system_pc' in data:
-        df.where(df.platform == 'PS4')
-
-    # if 'age_bracket_from' not in data:
-    #   data['age_bracket_from'] = 13
-    # if 'age_bracket_to' not in data:
-    #   data['age_bracket_to'] = 75
-    # df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
+def construct_user_query(form):
+    where = ''
     
-    return df
+    if 'age_bracket_from' in form or 'age_bracket_to' in form:
+        where += 'WHERE '
+        if 'age_bracket_from' in form:
+            users += f"""min_age > {form['age_bracket_from']} """
+            if 'age_bracket_to' in form:
+                query += f""" AND max_age < {form['age_bracket_to']} """
+        elif 'age_bracket_to' in form:
+            query += f"""max_age < {form['age_bracket_to']} """
+    
+    return where
 
-def spark_submit_query(data):
+def where_system(form):
+    where = ''
+    
+    if 'system_pc' in form and 'system_ps4' in form:
+        where = f"""WHERE platform = {form['system_pc']}
+                    OR platform = {form['system_ps4']}
+                """
+    elif 'system_pc' in form:
+        where = f"WHERE platform = {form['system_pc']}"
+    elif 'system_ps4' in form:
+        where = f"WHERE platform = {form['system_ps4']}"
+    
+    return where
+
+def where_daterange(form):
+    where = ''
+
+    if 'datetime_from' in form or 'datetime_to' in form:
+        where += ' WHERE '
+        if 'datetime_from' in form:
+            where += f" event_time > {datetime(form['datetime_from'])}"
+        if 'datetime_to' in form:
+            if where != ' WHERE ':
+                where += ' AND ' 
+            where += f" event_time < {datetime(form['datetime_to'])}"
+    if 'game_name' in form:
+        if where != '':
+            where += ' AND ' 
+        where += f"game LIKE {form['game_name']}"
+
+    return where
+
+def construct_query(form):
+    users = 'SELECT * FROM users'
+    users += construct_user_query(form)
+
+    gevents = 'SELECT * FROM gameplay_events'
+    pevents = 'SELECT * FROM purchase_events'
+
+    where = where_system(form)
+    gevents += where
+    pevents += where
+
+    where = where_datarange(form)
+    gevents += where
+    pevents += where
+
+    return (gevents, pevents, users)
+
+def submit_query(queries):
     users = sdb.load_and_get_table_df("v1", "users")
     gevents = sdb.load_and_get_table_df("v1", "gameplay_events")
     pevents = sdb.load_and_get_table_df("v1", "purchase_events")
 
-    df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
+    gevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
+    pevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
 
-    df['event_time'].astype('datetime64')
-    lines = df.groupby(pd.Grouper(key='event_time', freq='100ms')).event_time.agg('count').to_frame('count').reset_index()
-    df.show()
-    values = lines['count'].values
-    labels = lines['event_time'].values
-    print(labels)
-
-    return labels, values, {}
+    return {
+        'users': users,
+        'gameplay_events': gevents,
+        'purchase_events': pevents
+    }
 
 @app.route('/')
 def home():
-    print(sdb)
+    print(db)
     return render_template('index.html')
 
 @app.before_first_request
 def activate_spark():
-    os.environ['JAVA_HOME'] = '/usr/lib/jvm/java-8-openjdk-amd64/'
-    sdb = spark_connector.SparkConnector()
+    db = cassandra_connector.DBConnector()
 
-@app.route('/data', methods=["GET"])
+@app.route('/form', methods=["GET"])
 def handle_form_submit():
     form_data = request.form
-    # app.logger.info('form submitted:', form_data)
+    # app.logger.info('form submitted:', form_form)
     
-    # query = construct_query(form_data)
-    labels, values, system_stats = spark_submit_query(form_data)
+    queries = construct_query(form_form)
+    # labels, values, system_stats = spark_submit_query(form_form)
+    data = submit_query(queries)
     
     return render_template(
-        'data.html',
+        'form.html',
         title='PC Users per 100ms',
         max=max(values) + 1,
         labels=labels,
-        values=values
+        gameplay_values=data['gameplay_values'],
+        purchase_values=data['purchase_values'],
+        user_demos=data['user_demographics']
     )
 
 if __name__ == '__main__':
