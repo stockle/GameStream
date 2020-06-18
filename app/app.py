@@ -64,7 +64,7 @@ def where_daterange(form):
     return where
 
 def construct_query(form):
-    users = 'SELECT * FROM users'
+    users = "SELECT * FROM 'users'"
     users += construct_user_query(form)
 
     gevents = 'SELECT * FROM gameplay_events'
