@@ -14,8 +14,8 @@ class SparkConnector:
 			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
 			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])  \
-			.config('spark.executor.memory', '8g') \
-			.config('spark.driver.memory','4g') \
+			.config('spark.executor.memory', '15g') \
+			.config('spark.driver.memory','6g') \
 			.getOrCreate()
 		self.sqlContext = SQLContext(sc)
 		self.sqlContext.setConf('spark.sql.shuffle.partitions', '10')
