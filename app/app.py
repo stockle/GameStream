@@ -68,7 +68,7 @@ def construct_query(form):
 
     gevents = 'SELECT * FROM gameplay_events'
     pevents = 'SELECT * FROM purchase_events'
-    if not ''.join(forms.values()):
+    if not ''.join(form.values()):
         users += ' LIMIT 1000'
         gevents += ' LIMIT 1000'
         pevents += ' LIMIT 1000'
