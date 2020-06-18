@@ -4,11 +4,6 @@ import logging
 from datetime import datetime
 from kafka import KafkaConsumer
 
-def decode_datetime(obj):
-    if '__datetime__' in obj:
-        obj = datetime.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S.%f")
-    return obj
-
 class EventConsumer:
     def __init__(self, db, handler, topic='topic', group=None):
         self.db = db
@@ -34,6 +29,7 @@ class EventConsumer:
         try:
             for message in consumer:
                 event = message.value
+                print(event)
                 logging.info(
                     'Received message ('
                     + self.topic + '/'
