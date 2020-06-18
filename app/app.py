@@ -8,6 +8,8 @@ from flask import Flask, Markup, render_template, request
 
 sdb = None
 
+print(os.environ)
+
 app = Flask(__name__)
 app.debug = True
 
