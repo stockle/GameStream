@@ -8,7 +8,12 @@ from flask import Flask, Markup, render_template, request
 
 sdb = None
 
-app = Flask(__name__)
+@app.before_first_request
+def app_factory():
+    sdb = spark_connector.SparkConnector()
+    return Flask(__name__)
+    
+app = app_factory()
 app.debug = True
 
 colors = [
@@ -68,10 +73,6 @@ def home():
     print(sdb)
     return render_template('index.html')
 
-@app.before_first_request
-def activate_spark():
-    sdb = spark_connector.SparkConnector()
-
 @app.route('/data', methods=["GET"])
 def handle_form_submit():
     form_data = request.form
@@ -88,5 +89,7 @@ def handle_form_submit():
         values=values
     )
 
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(port=8080)
