@@ -10,7 +10,7 @@ def decode_datetime(obj):
     return obj
 
 class EventConsumer:
-    def __init__(self, db, handler, topic='topic', group='group_1'):
+    def __init__(self, db, handler, topic='topic', group=None):
         self.db = db
         self.group = group
         self.topic = topic
