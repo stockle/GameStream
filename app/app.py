@@ -23,11 +23,11 @@ def construct_user_query(form):
     if 'age_bracket_from' in form or 'age_bracket_to' in form:
         where += 'WHERE '
         if 'age_bracket_from' in form:
-            users += f"""min_age > {form['age_bracket_from']} """
+            where += f"""min_age > {form['age_bracket_from']} """
             if 'age_bracket_to' in form:
-                query += f""" AND max_age < {form['age_bracket_to']} """
+                where += f""" AND max_age < {form['age_bracket_to']} """
         elif 'age_bracket_to' in form:
-            query += f"""max_age < {form['age_bracket_to']} """
+            where += f"""max_age < {form['age_bracket_to']} """
     
     return where
 
