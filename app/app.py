@@ -63,14 +63,13 @@ def spark_submit_query(data):
 
     return labels, values, {}
 
-
-@app.before_first_request
-def activate_job():
-    sdb = spark_connector.SparkConnector()
-
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.before_first_request
+def activate_spark():
+    sdb = spark_connector.SparkConnector()
 
 @app.route('/data', methods=["GET"])
 def handle_form_submit():
