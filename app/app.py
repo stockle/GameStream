@@ -6,7 +6,8 @@ from database import cassandra_connector
 from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
-db = cassandra_connector.DBConnector("v1")
+db = cassandra_connector.DBConnector()
+db.init_session(keyspace='v1')
 
 app = Flask(__name__)
 app.debug = True
