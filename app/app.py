@@ -65,6 +65,7 @@ def spark_submit_query(data):
 
 @app.route('/')
 def home():
+    print(sdb)
     return render_template('index.html')
 
 @app.before_first_request
