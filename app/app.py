@@ -93,8 +93,8 @@ def submit_query(queries):
 
     return {
         'user_demographics': users,
-        'gameplay_events': gevents,
-        'purchase_events': pevents
+        'gameplay_values': gevents,
+        'purchase_values': pevents
     }
 
 @app.route('/')
@@ -110,7 +110,7 @@ def handle_form_submit():
     data = submit_query(queries)
     
     return render_template(
-        'form.html',
+        'data.html',
         title='PC Users per 100ms',
         max=max(data['gameplay_values']['count'].values) + 1,
         labels=data['gameplay_values']['event_time'].values,
