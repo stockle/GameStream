@@ -20,13 +20,13 @@ colors = [
 def construct_user_query(form):
     where = ''
     
-    if 'age_bracket_from' in form or 'age_bracket_to' in form:
+    if form['age_bracket_from'] != '' or form['age_bracket_to'] != '':
         where += 'WHERE '
-        if 'age_bracket_from' in form:
+        if form['age_bracket_from'] != '':
             where += f"""min_age > {form['age_bracket_from']} """
-            if 'age_bracket_to' in form:
+            if form['age_bracket_to'] != '':
                 where += f""" AND max_age < {form['age_bracket_to']} """
-        elif 'age_bracket_to' in form:
+        elif form['age_bracket_to'] != '':
             where += f"""max_age < {form['age_bracket_to']} """
     
     return where
@@ -34,13 +34,13 @@ def construct_user_query(form):
 def where_system(form):
     where = ''
     
-    if 'system_pc' in form and 'system_ps4' in form:
+    if form['system_pc'] != '' and form['system_ps4'] != '':
         where = f"""WHERE platform = {form['system_pc']}
                     OR platform = {form['system_ps4']}
                 """
-    elif 'system_pc' in form:
+    elif form['system_pc'] != '':
         where = f"WHERE platform = {form['system_pc']}"
-    elif 'system_ps4' in form:
+    elif form['system_ps4'] != '':
         where = f"WHERE platform = {form['system_ps4']}"
     
     return where
@@ -48,15 +48,15 @@ def where_system(form):
 def where_daterange(form):
     where = ''
 
-    if 'datetime_from' in form or 'datetime_to' in form:
+    if form['datetime_from'] != '' or form['datetime_to'] != '':
         where += ' WHERE '
-        if 'datetime_from' in form:
+        if form['datetime_from'] != '':
             where += f" event_time > {form['datetime_from']}"
-        if 'datetime_to' in form:
+        if form['datetime_to'] != '':
             if where != ' WHERE ':
                 where += ' AND ' 
             where += f" event_time < {form['datetime_to']}"
-    if 'game_name' in form:
+    if form['game_name'] != '':
         if where != '':
             where += ' AND ' 
         where += f"game LIKE {form['game_name']}"
@@ -68,7 +68,7 @@ def construct_query(form):
 
     gevents = 'SELECT * FROM gameplay_events'
     pevents = 'SELECT * FROM purchase_events'
-    if not form:
+    if not ''.join(forms.values()):
         users += ' LIMIT 1000'
         gevents += ' LIMIT 1000'
         pevents += ' LIMIT 1000'
