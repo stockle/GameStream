@@ -20,13 +20,13 @@ colors = [
 def construct_user_query(form):
     where = ''
     
-    if form['age_bracket_from'] != '' or form['age_bracket_to'] != '':
+    if 'age_bracket_from' in form or 'age_bracket_to' in form:
         where += 'WHERE '
-        if form['age_bracket_from'] != '':
+        if 'age_bracket_from' in form:
             where += f"""min_age > {form['age_bracket_from']} """
-            if form['age_bracket_to'] != '':
+            if 'age_bracket_to' in form:
                 where += f""" AND max_age < {form['age_bracket_to']} """
-        elif form['age_bracket_to'] != '':
+        elif 'age_bracket_to' in form:
             where += f"""max_age < {form['age_bracket_to']} """
     
     return where
@@ -34,13 +34,13 @@ def construct_user_query(form):
 def where_system(form):
     where = ''
     
-    if form['system_pc'] != '' and form['system_ps4'] != '':
+    if 'system_pc' in form and 'system_ps4' in form:
         where = f"""WHERE platform = {form['system_pc']}
                     OR platform = {form['system_ps4']}
                 """
-    elif form['system_pc'] != '':
+    elif 'system_pc' in form:
         where = f"WHERE platform = {form['system_pc']}"
-    elif form['system_ps4'] != '':
+    elif 'system_ps4' in form:
         where = f"WHERE platform = {form['system_ps4']}"
     
     return where

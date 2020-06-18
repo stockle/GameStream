@@ -19,8 +19,8 @@
 			<input type="checkbox" id="system_ps4" name="system_ps4" value="{{ request.form['system_ps4'] }}"/>
 
 			<label for="age_bracket_from">Age Group</label>
-			<input type="number" id="age_bracket_from" name="age_bracket_from" min="13" max="31" value="{{ request.form['age_bracket_from'] }}">
-			<input type="number" id="age_bracket_to" name="age_bracket_to" min="31" max="75" value="{{ request.form['age_bracket_to'] }}">
+			<input type="number" id="age_bracket_from" name="age_bracket_from" min="13" value="{{ request.form['age_bracket_from'] }}">
+			<input type="number" id="age_bracket_to" name="age_bracket_to" max="75" value="{{ request.form['age_bracket_to'] }}">
 
 			<label for="datetime_from">From</label>
 			<input type="datetime-local" id="datetime_from" name="datetime_from" value="{{ request.form['datetime_from'] }}">
