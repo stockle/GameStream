@@ -54,11 +54,24 @@
           pointHighlightStroke: "rgba(151,187,205,1)",
           bezierCurve : false,
           data : [
-	    	{% for item in values %}
-              {{ item }},
+	    	{% for item in gameplay_values.iterrows() %}
+              {{ item['count'], item }},
             {% endfor %}]
           }
-	]
+		], [{
+          fillColor: "rgba(251,187,105,0.2)",
+          strokeColor: "rgba(251,187,105,1)",
+          pointColor: "rgba(251,187,105,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(251,187,105,1)",
+          bezierCurve : false,
+          data : [
+	    	{% for item in purchase_values.iterrows() %}
+              {{ item['count'], item }},
+            {% endfor %}]
+          }
+		}]
       }
 
       Chart.defaults.global.animationSteps = 50;
