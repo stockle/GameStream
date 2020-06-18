@@ -73,7 +73,11 @@ def activate_job():
     thread = threading.Thread(target=run_job)
     thread.start()
 
-@app.route('/', methods=["POST"])
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/data', methods=["POST"])
 def handle_form_submit():
     form_data = request.form
     # app.logger.info('form submitted:', form_data)
@@ -82,7 +86,7 @@ def handle_form_submit():
     labels, values, system_stats = spark_submit_query(form_data)
     
     return render_template(
-        'index.html',
+        'data.html',
         title='PC Users per 100ms',
         max=max(values) + 1,
         labels=labels,
