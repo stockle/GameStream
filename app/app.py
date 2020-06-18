@@ -6,7 +6,7 @@ from database import cassandra_connector
 from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
-db = cassandra_connector.DBConnector()
+db = cassandra_connector.DBConnector("v1")
 
 app = Flask(__name__)
 app.debug = True
@@ -80,9 +80,9 @@ def construct_query(form):
     return (gevents, pevents, users)
 
 def submit_query(queries):
-    users = db.load_and_get_table_df("v1", "users")
-    gevents = db.load_and_get_table_df("v1", "gameplay_events")
-    pevents = db.load_and_get_table_df("v1", "purchase_events")
+    users = db.select("users")
+    gevents = db.select("gameplay_events")
+    pevents = db.select("purchase_events")
 
     gevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
     pevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
