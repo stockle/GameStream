@@ -5,6 +5,7 @@ with open(activate_this) as f:
 import sys
 import logging
 
+sys.stdout = sys.stderr
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/html/app/")
 
