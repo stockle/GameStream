@@ -77,10 +77,8 @@ def construct_query(form):
         users += construct_user_query(form)
 
         where = where_system(form)
-        gevents += where
-        pevents += where
-
         where = where_daterange(form, where)
+
         gevents += where
         pevents += where
 
