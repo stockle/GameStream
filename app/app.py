@@ -8,7 +8,6 @@ from flask import Flask, Markup, render_template, request
 
 sdb = None
 
-@app.before_first_request
 def app_factory():
     sdb = spark_connector.SparkConnector()
     return Flask(__name__)
