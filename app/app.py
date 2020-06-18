@@ -72,6 +72,7 @@ def home():
 
 @app.before_first_request
 def activate_spark():
+    os.environ['JAVA_HOME'] = '/usr/lib/jvm/java-8-openjdk-amd64/'
     sdb = spark_connector.SparkConnector()
 
 @app.route('/data', methods=["GET"])
