@@ -12,7 +12,7 @@ class SparkConnector:
 			.appName('SCA') \
 			.config('spark.jars.packages', 'com.datastax.spark:spark-cassandra-connector_2.11:2.3.0') \
 			.config('spark.cassandra.connection.host', os.environ['DB_ADDR']) \
-			.config('spasprk.cassandra.auth.username', os.environ['DB_USER']) \
+			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])  \
 			.config('spark.executor.memory', '15g') \
 			.config('spark.driver.memory','6g') \
