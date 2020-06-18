@@ -1,10 +1,10 @@
 import os
 import numpy
-import findspark
+import threading
 import pandas as pd
 from datetime import datetime
-from pyspark.sql.functions import col, asc
 from database import spark_connector
+from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
 sdb = None
