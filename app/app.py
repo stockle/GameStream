@@ -1,6 +1,5 @@
 import os
 import numpy
-import threading
 import pandas as pd
 from datetime import datetime
 from database import spark_connector
@@ -67,11 +66,7 @@ def spark_submit_query(data):
 
 @app.before_first_request
 def activate_job():
-    def run_job():
-        sdb = spark_connector.SparkConnector()
-
-    thread = threading.Thread(target=run_job)
-    thread.start()
+    sdb = spark_connector.SparkConnector()
 
 @app.route('/')
 def home():
