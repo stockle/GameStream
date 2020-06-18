@@ -75,7 +75,7 @@ def construct_query(form):
     gevents += where
     pevents += where
 
-    where = where_datarange(form)
+    where = where_daterange(form)
     gevents += where
     pevents += where
 
