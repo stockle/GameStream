@@ -98,13 +98,11 @@ def home():
     print(db)
     return render_template('index.html')
 
-@app.route('/form', methods=["GET"])
+@app.route('/data', methods=["GET"])
 def handle_form_submit():
     form_data = request.form
-    # app.logger.info('form submitted:', form_form)
     
     queries = construct_query(form_data)
-    # labels, values, system_stats = spark_submit_query(form_form)
     data = submit_query(queries)
     
     return render_template(
