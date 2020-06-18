@@ -5,10 +5,9 @@ from cassandra.cluster import Cluster, BatchStatement
 DB_IDLE = 10
 
 class DBConnector:
-	def __init__(self):
-		self.session = None
+	def __init__(self, keyspace='v1'):
 		self.cluster = None
-		self.keyspace = None
+		self.session = self.init_session(keyspace)
 
 	def __del__(self):
 		self.cluster.shutdown()
@@ -20,10 +19,11 @@ class DBConnector:
 		)
 		self.cluster = Cluster([os.environ['DB_ADDR']], auth_provider=ap, idle_heartbeat_interval=DB_IDLE)
 
-	def init_session(self):
+	def init_session(self, keyspace):
 		if not self.session:
 			self.init_cluster()
 			self.session = self.cluster.connect()
+		self.init_keyspace(keyspace)
 
 	def init_keyspace(self, keyspace):
 		self.session.execute("""
