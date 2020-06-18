@@ -6,9 +6,7 @@ from database import cassandra_connector
 from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
-db = None
-
-print(os.environ)
+db = cassandra_connector.DBConnector()
 
 app = Flask(__name__)
 app.debug = True
@@ -99,10 +97,6 @@ def submit_query(queries):
 def home():
     print(db)
     return render_template('index.html')
-
-@app.before_first_request
-def activate_spark():
-    db = cassandra_connector.DBConnector()
 
 @app.route('/form', methods=["GET"])
 def handle_form_submit():
