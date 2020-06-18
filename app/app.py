@@ -60,7 +60,7 @@ def where_daterange(form, where):
                 where += ' AND ' 
             where += f" event_time < {form['datetime_to']}"
     if form['game_name'] != '':
-        where += f"game LIKE {form['game_name']}"
+        where += f"game LIKE '{form['game_name']}'"
 
     return where
 
