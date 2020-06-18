@@ -6,7 +6,7 @@ from pyspark import SparkContext, SparkConf, SQLContext
 
 class SparkConnector:
 	def __init__(self):
-		findspark.init()
+		# findspark.init()
 		sc = SparkConf() \
 			.master("local[*]") \
 			.appName('SCA') \
@@ -16,7 +16,6 @@ class SparkConnector:
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])  \
 			.config('spark.executor.memory', '15g') \
 			.config('spark.driver.memory','6g') \
-			.config("sqlContext.executor.heartbeatInterval", "36000s") 
 			.getOrCreate()
 		self.sqlContext = SQLContext(sc)
 		self.sqlContext.setConf('spark.sql.shuffle.partitions', '10')
