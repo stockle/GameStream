@@ -37,7 +37,6 @@ class EventConsumer:
                 logging.info(
                     'Received message ('
                     + self.topic + '/'
-                    + self.group
                     + '):', event
                 )
                 self.handler(self.db, event)

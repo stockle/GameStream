@@ -45,4 +45,6 @@ if __name__=="__main__":
         'gameplay_event'
     )
 
+    print(gameplay_evcon)
+
     gameplay_evcon.consume()
