@@ -107,13 +107,13 @@ def home():
     print(db)
     return render_template('index.html')
 
-@app.route('/data', methods=["GET"])
+@app.route('/data', methods=["GET", "POST"])
 def handle_form_submit():
     form_data = request.form
-    
+
     queries = construct_query(form_data)
     data = submit_query(queries)
-    
+
     return render_template(
         'data.html',
         title='PC Users per 100ms',
