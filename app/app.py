@@ -45,11 +45,14 @@ def where_system(form):
 
     return where
 
-def where_daterange(form):
-    where = ''
+def where_daterange(form, where):
+
+    if where != '':
+        where += ' AND '
+    else:
+        where += ' WHERE '
 
     if form['datetime_from'] != '' or form['datetime_to'] != '':
-        where += ' WHERE '
         if form['datetime_from'] != '':
             where += f" event_time > {form['datetime_from']}"
         if form['datetime_to'] != '':
@@ -57,8 +60,6 @@ def where_daterange(form):
                 where += ' AND ' 
             where += f" event_time < {form['datetime_to']}"
     if form['game_name'] != '':
-        if where != '':
-            where += ' AND ' 
         where += f"game LIKE {form['game_name']}"
 
     return where
@@ -79,7 +80,7 @@ def construct_query(form):
         gevents += where
         pevents += where
 
-        where = where_daterange(form)
+        where = where_daterange(form, where)
         gevents += where
         pevents += where
 
