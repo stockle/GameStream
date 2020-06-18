@@ -4,6 +4,54 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, asc
 from pyspark import SparkContext, SparkConf, SQLContext
 
+"DEPRECATED"
+# def join_df_tables(gevents, pevents, users, data):
+#     users = db.load_and_get_table_df("v1", "users")
+#     gevents = db.load_and_get_table_df("v1", "gameplay_events")
+#     pevents = db.load_and_get_table_df("v1", "purchase_events")
+
+#     df = gevents.crossJoin(pevents)
+
+#     # join dates
+#     if 'datetime_from' in data:
+#         df = gevents.where(df.event_time > datetime(data['datetime_from']))
+#     if 'datetime_to' in data:
+#         df = gevents.where(df.event_time < datetime(data['datetime_to']))
+#     if 'game_name' in data:
+#         df = gevents.where(col('game').like(data['game_name']))
+
+#     # join system
+#     if 'system_pc' in data and 'system_ps4' in data:
+#         df.where(df.platform == 'PC' | df.platform == 'PS4')
+#     elif 'system_ps4' in data:
+#         df.where(df.platform == 'PC')
+#     elif 'system_pc' in data:
+#         df.where(df.platform == 'PS4')
+
+#     # if 'age_bracket_from' not in data:
+#     #   data['age_bracket_from'] = 13
+#     # if 'age_bracket_to' not in data:
+#     #   data['age_bracket_to'] = 75
+#     # df = df.join(users, (users.age > data['age_bracket_from']) & (users.age < data['age_bracket_to']) & (users.id == df.user_id))
+    
+#     return df
+
+# def spark_submit_query(data):
+#     users = db.load_and_get_table_df("v1", "users")
+#     gevents = db.load_and_get_table_df("v1", "gameplay_events")
+#     pevents = db.load_and_get_table_df("v1", "purchase_events")
+
+#     df = join_df_tables(gevets, pevents, users, data).orderBy(['event_time'], ascending=True)
+
+#     df['event_time'].astype('datetime64')
+#     lines = df.groupby(pd.Grouper(key='event_time', freq='100ms')).event_time.agg('count').to_frame('count').reset_index()
+#     df.show()
+#     values = lines['count'].values
+#     labels = lines['event_time'].values
+#     print(labels)
+
+#     return labels, values, {}
+
 class SparkConnector:
 	def __init__(self):
 		# findspark.init()
@@ -41,7 +89,7 @@ if __name__=="__main__":
 	df.show()
 
 	data = {
-		'game_name': 'Fal',
+		'game_name': 'Dead',
 		'system_pc': True,
 		'age_bracket_from': 5
 	}
