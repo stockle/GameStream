@@ -82,7 +82,7 @@ def construct_query(form):
         gevents += where
         pevents += where
 
-    return (users + ';', gevents + ';', pevents + ';')
+    return (users + ' ALLOW FILTERING;', gevents + ' ALLOW FILTERING;', pevents + ' ALLOW FILTERING;')
 
 def submit_query(queries):
     print(queries)
