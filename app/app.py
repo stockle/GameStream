@@ -98,8 +98,8 @@ def submit_query(queries):
 
     print(users)
 
-    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).agg('count')
-    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).agg('count')
+    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='5s')).agg('count')
+    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='5s')).agg('count')
 
     print(pevents)
     print(gevents)
