@@ -13,10 +13,10 @@
 			<input type="text" id="game_name" name="game_name" value="{{ request.form['game_name'] }}"/>
 			
 			<label for="system_pc">PC</label>
-			<input type="checkbox" id="system_pc" name="system_pc" value="{{ request.form['system_pc'] }}" checked/>
+			<input type="checkbox" id="system_pc" name="system_pc" value="{{ 'system_pc' in request.form }}"/>
 
 			<label for="system_ps4">PS4</label>
-			<input type="checkbox" id="system_ps4" name="system_ps4" value="{{ request.form['system_ps4'] }}" checked/>
+			<input type="checkbox" id="system_ps4" name="system_ps4" value="{{ 'system_ps4' in request.form }}"/>
 
 			<label for="age_bracket_from">Age Group</label>
 			<input type="number" id="age_bracket_from" name="age_bracket_from" min="13" value="{{ request.form['age_bracket_from'] }}">
@@ -104,6 +104,32 @@
       });
 
     </script>
+
+<!--     <h1>{{ title }}</h1>
+
+    <canvas id="chart" width="900" height="600"></canvas>
+    <script>
+		var barData = {
+			labels : [
+			  {% for item in user_labels %}
+			     "{{ item }}",
+			  {% endfor %}
+			],
+
+			datasets : [{
+			  data : [
+				{% for item in user_values %}
+			      {{ item }},
+			    {% endfor %}
+			  ]
+			 }]
+		}
+		var user_demos = new Chart(ctx, {
+		    type: 'doughnut',
+		    data: data,
+		    options: options
+		});
+    </script> -->
   </center>
 </body>
 </html>
