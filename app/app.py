@@ -92,7 +92,8 @@ def construct_query(form):
 def submit_query(queries):
     print(queries)
 
-    users = pd.DataFrame(list(db.select(queries[0])))
+    users = None
+    #users = pd.DataFrame(list(db.select(queries[0])))
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
