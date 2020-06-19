@@ -122,8 +122,8 @@ def handle_form_submit():
         title='PC Users per 100ms',
         max=max(data['gameplay_values']['count'].values) + 1,
         labels=data['gameplay_values']['event_time'].values,
-        gameplay_values=data['gameplay_values'],
-        purchase_values=data['purchase_values'],
+        gameplay_values=data['gameplay_values']['count'].values,
+        purchase_values=data['purchase_values']['count'].values,
         user_demos=data['user_demographics']
     )
 
