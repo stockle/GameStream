@@ -128,7 +128,8 @@ def handle_form_submit():
         'data.html',
         title='Users per 10s',
         max=max(data['gameplay_values']['count'].values) + 10,
-        labels=data['gameplay_values']['event_time'].values,
+        purchase_labels=data['purchase_values']['event_time'].values,
+        gameplay_labels=data['gameplay_values']['event_time'].values,
         gameplay_values=data['gameplay_values']['count'].values,
         purchase_values=data['purchase_values']['count'].values,
         user_demos=data['user_demographics']
