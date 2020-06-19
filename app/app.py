@@ -101,8 +101,10 @@ def submit_query(queries):
     gevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
     pevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
 
+    print(gevents)
+
     return {
-        'user_demographics': users,
+        'user_demographics': users, #pd.merge(users[~users['id'].isin(gevents)], users[~users['id'].isin(pevents)], on='id'),
         'values': pd.merge(gevents, pevents, on='event_time'),
     }
 
