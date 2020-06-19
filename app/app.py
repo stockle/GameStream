@@ -92,21 +92,20 @@ def construct_query(form):
 def submit_query(queries):
     print(queries)
 
-    users = None
-    # users = pd.DataFrame(list(db.select(queries[0])))
+    users = pd.DataFrame(list(db.select(queries[0])))
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
+    print(pevents)
+    
+    values = pd.merge(gevents, pevents, on='event_time')
+    values.sort_values(by='event_time')
+    values = values.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.agg('count').to_frame('count').reset_index()
 
-    gevents['event_time'].astype('datetime64')
-    pevents['event_time'].astype('datetime64')
-    gevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
-    pevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
-
-    print(gevents)
+    print(values)
 
     return {
-        'user_demographics': users, #pd.merge(users[~users['id'].isin(gevents)], users[~users['id'].isin(pevents)], on='id'),
-        'values': pd.merge(gevents, pevents, on='event_time'),
+        'user_demographics': users, #users[~users['id'].isin(values)]
+        'values': values,
     }
 
 @app.route('/')
@@ -130,8 +129,8 @@ def handle_form_submit():
         date_labels=data['values']['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
+        user_demos=data['user_demographics'].values
     )
-    # user_demos=data['user_demographics'].values
 
 if __name__ == '__main__':
     app.run(port=8080)
