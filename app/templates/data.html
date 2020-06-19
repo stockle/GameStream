@@ -40,6 +40,7 @@
     <script>
     	var timeFormat = 'hh:mm:ss';
 		function newDateString(hours, minutes, seconds) {
+			console.log(hours, minutes, seconds)
 			return moment().hour(hours).minute(minutes).second(seconds).format(timeFormat);
 		}
 
