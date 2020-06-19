@@ -38,17 +38,11 @@
 
     <canvas id="chart" width="900" height="600"></canvas>
     <script>
-    	var timeFormat = 'hh:mm:ss';
-		function newDateString(hours, minutes, seconds) {
-			console.log(hours, minutes, seconds)
-			return moment().hour(hours).minute(minutes).second(seconds).format(timeFormat);
-		}
-
       // bar chart data
       var barData = {
         labels : [
           {% for item in gameplay_labels %}
-            newDateString( {{ item.hour }}, {{ item.minute }}, {{ item.second }} ),
+             {{ item }},
           {% endfor %}
         ],
 
