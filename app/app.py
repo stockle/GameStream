@@ -96,16 +96,24 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
-    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')
-    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')
+    #print(users)
 
-    values = pd.merge(gevents, pevents, on='event_time')
+    users = users[~users['id'].isin(pevents)]
+    users = users[~users['id'].isin(gevents)]
+
+    pevents['event_time'] = pevents['event_time'].astype('datetime64')
+    gevents['event_time'] = gevents['event_time'].astype('datetime64')
+
+    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='5s'))['event_time'].transform('count')#.reset_index()
+    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='5s'))['event_time'].transform('count')#.reset_index()
+    print(pevents['event_time'])
+    print(gevents['event_time'])
+    values = gevents.merge(pevents, on='event_time')
     print(values)
     values = values.sort_values(by='event_time')
-    users = users[~users['id'].isin(values)]
-    users = users.groupby(pd.cut(users.min_age, [13,19,20,29,30,39,40,49,50,59,60,69,75])).sum()
+    users = users.groupby(pd.cut(users.min_age, [13,20,30,40,50,60,75])).sum()
 
-    print(users)
+    #print(users)
 
     return {
         'user_demographics': users,
@@ -125,7 +133,7 @@ def handle_form_submit():
 
     queries = construct_query(form_data)
     data = submit_query(queries)
-    print(data)
+    #print(data)
 
     return render_template(
         'data.html',
