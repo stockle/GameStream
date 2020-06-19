@@ -128,8 +128,8 @@ def handle_form_submit():
         date_labels=data['values']['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
-        user_demos=data['user_demographics'].values
     )
+    # user_demos=data['user_demographics'].values
 
 if __name__ == '__main__':
     app.run(port=8080)
