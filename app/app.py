@@ -95,8 +95,10 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
-    gevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
-    pevents = gevents.groupby(pd.Grouper(key='event_time', freq='1s')).event_time.agg('count').to_frame('count').reset_index()
+    gevents.['event_time'].astype('datetime64')
+    pevents.['event_time'].astype('datetime64')
+    gevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
+    pevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
 
     return {
         'user_demographics': users,
@@ -122,8 +124,8 @@ def handle_form_submit():
 
     return render_template(
         'data.html',
-        title='PC Users per 100ms',
-        max=max(data['gameplay_values']['count'].values) + 1,
+        title='Users per 10s',
+        max=max(data['gameplay_values']['count'].values) + 10,
         labels=data['gameplay_values']['event_time'].values,
         gameplay_values=data['gameplay_values']['count'].values,
         purchase_values=data['purchase_values']['count'].values,
