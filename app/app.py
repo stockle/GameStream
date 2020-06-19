@@ -54,12 +54,14 @@ def where_daterange(form, where):
 
     if form['datetime_from'] != '' or form['datetime_to'] != '':
         if form['datetime_from'] != '':
-            print(datetime.strptime(form['datetime_from'], "%Y-%m-%d %H:%M:%S.%f"))
-            where += f" event_time > 1"#{datetime.strptime(form['datetime_from'], "%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S.%f")}"
+            print(form['datetime_from'])
+            date = datetime.strptime(form['datetime_from'], "%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S.%f")
+            where += f" event_time > {date}"
         if form['datetime_to'] != '':
             if where != ' WHERE ':
-                where += ' AND ' 
-            where += f" event_time < {datetime.strptime(form['datetime_to'], "%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S.%f")}"
+                where += ' AND '
+            date = datetime.strptime(form['datetime_to'], "%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S.%f")
+            where += f" event_time < {date}"
     if form['game_name'] != '':
         where += f"game LIKE '{form['game_name']}'"
 
