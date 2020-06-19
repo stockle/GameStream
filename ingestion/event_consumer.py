@@ -28,8 +28,7 @@ class EventConsumer:
             level=logging.DEBUG
         )
         try:
-            consumer.poll() 
-            consumer.seek_to_end()
+            consumer.poll()
             for message in consumer:
                 event = message.value
                 print(event)
