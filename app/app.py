@@ -3,7 +3,6 @@ import numpy
 import pandas as pd
 from datetime import datetime
 from database import cassandra_connector
-from pyspark.sql.functions import col, asc
 from flask import Flask, Markup, render_template, request
 
 db = cassandra_connector.DBConnector()
@@ -20,20 +19,22 @@ colors = [
 def construct_user_query(form):
     where = ''
     
-    if 'age_bracket_from' in form or 'age_bracket_to' in form:
+    if form['age_bracket_from'] != '' or form['age_bracket_to'] != '':
         where += ' WHERE '
-        if 'age_bracket_from' in form:
+        if form['age_bracket_from'] != '':
             where += f"""min_age > {form['age_bracket_from']} """
-            if 'age_bracket_to' in form:
+            if form['age_bracket_to'] != '':
                 where += f""" AND max_age < {form['age_bracket_to']} """
-        elif 'age_bracket_to' in form:
+        elif form['age_bracket_to'] != '':
             where += f"""max_age < {form['age_bracket_to']} """
-    
+        else:
+            where = ''
+
     return where
 
 def where_system(form):
     where = ''
-    
+
     if 'system_pc' in form and 'system_ps4' in form:
         where = f""" WHERE platform = 'PC'
                     OR platform = 'PS4'
@@ -46,15 +47,15 @@ def where_system(form):
     return where
 
 def where_daterange(form, where):
-
-    if where != '':
-        where += ' AND '
+    print(where)
+    if where == '':
+        where = ' WHERE '
     else:
-        where += ' WHERE '
+        where += ' AND '
+    print(where)
 
     if form['datetime_from'] != '' or form['datetime_to'] != '':
         if form['datetime_from'] != '':
-            print(form['datetime_from'])
             date = datetime.strptime(form['datetime_from'], "%Y-%m-%dT%H:%M").strftime("%Y-%m-%d %H:%M:%S.%f")
             where += f" event_time > '{date}'"
         if form['datetime_to'] != '':
@@ -63,8 +64,10 @@ def where_daterange(form, where):
             date = datetime.strptime(form['datetime_to'], "%Y-%m-%dT%H:%M").strftime("%Y-%m-%d %H:%M:%S.%f")
             where += f" event_time < '{date}'"
     if form['game_name'] != '':
-        if where != ' WHERE ' and where != ' AND ':
+        if where != ' WHERE ' and where != ' AND ' and where:
             where += ' AND '
+        elif where == '':
+            where = ' WHERE '
         where += f" game LIKE '{form['game_name']}'"
 
     return where
@@ -96,19 +99,20 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
-    print(users)
+    users = users[~users['id'].isin(pevents)]
+    users = users[~users['id'].isin(gevents)]
 
-    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='5s')).agg('count')
-    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='5s')).agg('count')
+    pevents['event_time'] = pevents['event_time'].astype('datetime64')
+    gevents['event_time'] = gevents['event_time'].astype('datetime64')
 
-    print(pevents)
-    print(gevents)
-
-    values = pd.merge(gevents, pevents, on='event_time')
-    print(values)
+    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='1s'))['event_time'].transform('count')
+    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='1s'))['event_time'].transform('count')
+    # print(pevents)
+    # print(gevents)
+    values = gevents.merge(pevents, on='event_time')
+    # print(values)
     values = values.sort_values(by='event_time')
-    users = users.groupby(pd.cut(df.min_age, [df.min_age, df.max_age])).count().reset_index()
-    users = users[~users['id'].isin(values)]
+    users = pd.DataFrame(users.groupby(pd.cut(users.min_age, [13,20,30,40,50,60,75])).min_age.agg('count').to_frame('count')).reset_index().dropna()
 
     return {
         'user_demographics': users,
@@ -128,16 +132,18 @@ def handle_form_submit():
 
     queries = construct_query(form_data)
     data = submit_query(queries)
-    print(data)
+    #print(data)
+    print(data['values']['count_y'].values)
 
     return render_template(
         'data.html',
-        title='Users per 10s',
+        title='Users per second',
         max=max(data['values']['count_x'].values) + 10,
         date_labels=data['values']['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
-        user_demos=data['user_demographics'].values
+        user_counts=data['user_demographics']['count'].values,
+        user_demos=['13-19', '20-29', '30-39', '40-49', '50-59', '60-75']
     )
 
 if __name__ == '__main__':
