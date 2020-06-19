@@ -63,7 +63,9 @@ def where_daterange(form, where):
             date = datetime.strptime(form['datetime_to'], "%Y-%m-%dT%H:%M").strftime("%Y-%m-%d %H:%M:%S.%f")
             where += f" event_time < '{date}'"
     if form['game_name'] != '':
-        where += f"game LIKE '{form['game_name']}'"
+        if where != ' WHERE ' and where != ' AND ':
+            where += ' AND '
+        where += f" game LIKE '{form['game_name']}'"
 
     return where
 
