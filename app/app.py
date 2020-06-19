@@ -99,6 +99,8 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
+    print(users, gevents, pevents)
+
     users = users[~users['id'].isin(pevents)]
     users = users[~users['id'].isin(gevents)]
 
@@ -113,6 +115,11 @@ def submit_query(queries):
     # print(values)
     values = values.sort_values(by='event_time')
     users = pd.DataFrame(users.groupby(pd.cut(users.min_age, [13,20,30,40,50,60,75])).min_age.agg('count').to_frame('count')).reset_index().dropna()
+
+    print(values)
+
+    if values.empty:
+        values = pd.DataFrame({'count_x':[0], 'count_y':[0], 'event_time':[0]})
 
     return {
         'user_demographics': users,
@@ -137,7 +144,7 @@ def handle_form_submit():
 
     return render_template(
         'data.html',
-        title='Users per second',
+        title='Active Users | Active Purchases',
         max=max(data['values']['count_x'].values) + 10,
         date_labels=data['values']['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
