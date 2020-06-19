@@ -63,7 +63,7 @@ class SparkConnector:
 			.config('spark.cassandra.auth.username', os.environ['DB_USER']) \
 			.config('spark.cassandra.auth.password', os.environ['DB_PASS'])  \
 			.config('spark.executor.memory', '15g') \
-			.config('spark.driver.memory','6g') \
+                        .config('spark.driver.memory','6g') \
 			.getOrCreate()
 		self.sqlContext = SQLContext(sc)
 		self.sqlContext.setConf('spark.sql.shuffle.partitions', '10')

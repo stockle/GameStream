@@ -74,7 +74,7 @@ def construct_query(form):
 
     gevents = 'SELECT * FROM gameplay_events'
     pevents = 'SELECT * FROM purchase_events'
-    if not ''.join(forms.values()):
+    if not ''.join(form.values()):
         users += ' LIMIT 1000'
         gevents += ' LIMIT 1000'
         pevents += ' LIMIT 1000'
@@ -87,7 +87,7 @@ def construct_query(form):
         gevents += where
         pevents += where
 
-    return (users + ';', gevents + ';', pevents + ';')
+    return (users + ' ALLOW FILTERING;', gevents + ' ALLOW FILTERING;', pevents + ' ALLOW FILTERING;')
 
 def submit_query(queries):
     print(queries)
@@ -111,7 +111,7 @@ def submit_query(queries):
     users = users[~users['id'].isin(values)]
 
     return {
-        'user_demographics': ,
+        'user_demographics': users,
         'values': values
     }
 
@@ -128,6 +128,7 @@ def handle_form_submit():
 
     queries = construct_query(form_data)
     data = submit_query(queries)
+    print(data)
 
     return render_template(
         'data.html',
