@@ -104,8 +104,7 @@ def submit_query(queries):
 
     return {
         'user_demographics': users,
-        'gameplay_values': gevents,
-        'purchase_values': pevents
+        'values': pd.merge(gevents, pevents, on='event_time'),
     }
 
 @app.route('/')
@@ -122,7 +121,10 @@ def handle_form_submit():
     queries = construct_query(form_data)
     data = submit_query(queries)
 
-    print(data['gameplay_values']['count'].values[:10])
+    # print(data['gameplay_values']['count'].values[:10])
+    # print(data['gameplay_values']['count'].values)
+    # print(data['purchase_values']['count'].values)
+    print(data['values'])
 
     return render_template(
         'data.html',
@@ -130,8 +132,7 @@ def handle_form_submit():
         max=max(data['gameplay_values']['count'].values) + 10,
         purchase_labels=data['purchase_values']['event_time'].values,
         gameplay_labels=data['gameplay_values']['event_time'].values,
-        gameplay_values=data['gameplay_values']['count'].values,
-        purchase_values=data['purchase_values']['count'].values,
+        values=data['values'],
         user_demos=data['user_demographics']
     )
 
