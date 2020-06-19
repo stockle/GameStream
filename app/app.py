@@ -121,19 +121,14 @@ def handle_form_submit():
     queries = construct_query(form_data)
     data = submit_query(queries)
 
-    # print(data['gameplay_values']['count'].values[:10])
-    # print(data['gameplay_values']['count'].values)
-    # print(data['purchase_values']['count'].values)
-    print(data['values'])
-
     return render_template(
         'data.html',
         title='Users per 10s',
         max=max(data['gameplay_values']['count'].values) + 10,
-        purchase_labels=data['purchase_values']['event_time'].values,
-        gameplay_labels=data['gameplay_values']['event_time'].values,
-        values=data['values'],
-        user_demos=data['user_demographics']
+        date_labels=data['event_time'].values,
+        gameplay_values=data['values']['count_x'].values,
+        purchase_values=data['values']['count_y'].values,
+        user_demos=data['user_demographics'].values
     )
 
 if __name__ == '__main__':
