@@ -31,6 +31,21 @@
 		</form>
 	</center>
 
+<!-- ,{
+          fillColor: "rgba(251,187,105,0.2)",
+          strokeColor: "rgba(251,187,105,1)",
+          pointColor: "rgba(251,187,105,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(251,187,105,1)",
+          bezierCurve : false,
+          data : [
+	    	{% for item in purchase_values %}
+              {{ item }},
+            {% endfor %}
+          ]
+		} -->
+
   <center>
     <h1>{{ title }}</h1>
 
