@@ -100,10 +100,7 @@ def submit_query(queries):
 
     pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')#.count().reset_index(name="count")
     gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')#.count().reset_index(name="count")
-
-    users = users.groupby('min_age', 'max_age').agg({'Age': ['min', 'max']})
-    users.columns = ['age_min', 'age_max']
-    users = users.reset_index()
+    users['count'] = users.groupby(['min_age', 'max_age']).agg({'Age': ['min', 'max']}).count()
 
     print(values)
 
