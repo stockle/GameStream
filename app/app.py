@@ -97,8 +97,8 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
-    gevents.['event_time'].astype('datetime64')
-    pevents.['event_time'].astype('datetime64')
+    gevents['event_time'].astype('datetime64')
+    pevents['event_time'].astype('datetime64')
     gevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
     pevents = gevents.groupby(pd.Grouper(key='event_time', freq='10s')).event_time.agg('count').to_frame('count').reset_index()
 
