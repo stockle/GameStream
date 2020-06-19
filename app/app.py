@@ -96,19 +96,16 @@ def submit_query(queries):
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
-    print(users)
-
     pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')
     gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.transform('nunique')
-
-    print(pevents)
-    print(gevents)
 
     values = pd.merge(gevents, pevents, on='event_time')
     print(values)
     values = values.sort_values(by='event_time')
-    users = users.groupby(pd.cut(df.min_age, [df.min_age, df.max_age])).count().reset_index()
     users = users[~users['id'].isin(values)]
+    users = users.groupby(pd.cut(users.min_age, [13,19,20,29,30,39,40,49,50,59,60,69,75])).sum()
+
+    print(users)
 
     return {
         'user_demographics': users,
