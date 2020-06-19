@@ -97,8 +97,7 @@ def submit_query(queries):
     pevents = pd.DataFrame(list(db.select(queries[2])))
     print(pevents)
     
-    values = pd.merge(gevents, pevents, on='event_time')
-    values.sort_values(by='event_time')
+    values = pd.merge(gevents, pevents, on='event_time').sort_values(by='event_time')
     values = values.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.agg('count').to_frame('count').reset_index()
 
     print(values)
