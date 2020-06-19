@@ -115,6 +115,8 @@ def handle_form_submit():
     queries = construct_query(form_data)
     data = submit_query(queries)
 
+    print(data['gameplay_values']['count'].values[:10])
+
     return render_template(
         'data.html',
         title='PC Users per 100ms',
