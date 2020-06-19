@@ -124,7 +124,7 @@ def handle_form_submit():
     return render_template(
         'data.html',
         title='Users per 10s',
-        max=max(data['gameplay_values']['count'].values) + 10,
+        max=max(data['values']['count_x'].values) + 10,
         date_labels=data['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
