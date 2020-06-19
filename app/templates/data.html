@@ -105,21 +105,21 @@
 
     </script>
 
-<!--     <h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
 
     <canvas id="chart" width="900" height="600"></canvas>
     <script>
 		var barData = {
 			labels : [
-			  {% for item in user_labels %}
-			     "{{ item }}",
+			  {% for item in user_demos %}
+			     "{{ item['min_age'] }}-{{ item['max_age'] }}",
 			  {% endfor %}
 			],
 
 			datasets : [{
 			  data : [
-				{% for item in user_values %}
-			      {{ item }},
+				{% for item in user_demos %}
+			      {{ item['count'] }},
 			    {% endfor %}
 			  ]
 			 }]
@@ -129,7 +129,7 @@
 		    data: data,
 		    options: options
 		});
-    </script> -->
+    </script>
   </center>
 </body>
 </html>

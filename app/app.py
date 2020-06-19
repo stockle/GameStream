@@ -95,16 +95,21 @@ def submit_query(queries):
     users = pd.DataFrame(list(db.select(queries[0])))
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
+
     print(pevents)
     
-    values = pd.merge(gevents, pevents, on='event_time').sort_values(by='event_time')
-    values = values.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.agg('count').to_frame('count').reset_index()
-
+    pevents = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.agg('count').to_frame('count').reset_index()
+    gevents = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.agg('count').to_frame('count').reset_index()
+    users = users.groupby('min_age', 'max_age').min_age.agg('count').to_frame('count').reset_index()
+    
     print(values)
+    print(users)
+
+    values = pd.merge(gevents, pevents, on='event_time').sort_values(by='event_time')
 
     return {
-        'user_demographics': users, #users[~users['id'].isin(values)]
-        'values': values,
+        'user_demographics': users[~users['id'].isin(values)],
+        'values': values
     }
 
 @app.route('/')
