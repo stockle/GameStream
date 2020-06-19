@@ -98,9 +98,8 @@ def submit_query(queries):
 
     print(users)
 
-    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).agg('count').transform('count')
-
-    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).agg('count').transform('count')
+    pevents['count'] = pevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.count().reset_index(name="count")
+    gevents['count'] = gevents.groupby(pd.Grouper(key='event_time', freq='60s')).event_time.count().reset_index(name="count")
 
     users = users.groupby('min_age', 'max_age').agg({'Age': ['min', 'max']})
     users.columns = ['age_min', 'age_max']
