@@ -92,8 +92,7 @@ def construct_query(form):
 def submit_query(queries):
     print(queries)
 
-    users = None
-    # users = pd.DataFrame(list(db.select(queries[0])))
+    users = pd.DataFrame(list(db.select(queries[0])))
     gevents = pd.DataFrame(list(db.select(queries[1])))
     pevents = pd.DataFrame(list(db.select(queries[2])))
 
@@ -120,12 +119,13 @@ def handle_form_submit():
 
     queries = construct_query(form_data)
     data = submit_query(queries)
+    print(data)
 
     return render_template(
         'data.html',
         title='Users per 10s',
         max=max(data['values']['count_x'].values) + 10,
-        date_labels=data['event_time'].values,
+        date_labels=data['values']['event_time'].values,
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
         user_demos=data['user_demographics'].values
