@@ -13,10 +13,10 @@
 			<input type="text" id="game_name" name="game_name" value="{{ request.form['game_name'] }}"/>
 			
 			<label for="system_pc">PC</label>
-			<input type="checkbox" id="system_pc" name="system_pc" value="{{ 'system_pc' in request.form }}"/>
+			<input type="radio" id="system_pc" name="system" value="system_pc"/>
 
 			<label for="system_ps4">PS4</label>
-			<input type="checkbox" id="system_ps4" name="system_ps4" value="{{ 'system_ps4' in request.form }}"/>
+			<input type="radio" id="system_ps4" name="system" value="system_ps4"/>
 
 			<label for="age_bracket_from">Age Group</label>
 			<input type="number" id="age_bracket_from" name="age_bracket_from" min="13" value="{{ request.form['age_bracket_from'] }}">
@@ -68,7 +68,7 @@
       var options = {
 		title: {
 			display: true,
-			text: 'Users per Second'
+			text: 'Users per Second {{ request.form['game_name'] }}, {{ system }}'
 		}
       }
 

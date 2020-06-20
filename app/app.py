@@ -35,14 +35,13 @@ def construct_user_query(form):
 def where_system(form):
     where = ''
 
-    if 'system_pc' in form and 'system_ps4' in form:
-        where = f""" WHERE platform = 'PC'
-                    OR platform = 'PS4'
-                """
-    elif 'system_pc' in form:
-        where = f" WHERE platform = 'PC'"
-    elif 'system_ps4' in form:
-        where = f" WHERE platform = 'PS4'"
+    if 'system' in form:
+        if form['system'] == 'system_pc' and form['system'] == 'system_ps4':
+            where = f""" WHERE platform IN ('PC', 'PS4')"""
+        elif form['system'] == 'system_pc':
+            where = f" WHERE platform = 'PC'"
+        elif form['system'] == 'system_ps4':
+            where = f" WHERE platform = 'PS4'"
 
     return where
 
@@ -142,6 +141,16 @@ def handle_form_submit():
     #print(data)
     print(data['values']['count_y'].values)
 
+    system = ''
+
+    if 'system' in form_data:
+        if form_data['system'] == 'system_pc' and form_data['system'] == 'system_ps4':
+            system = "PC & PS4"
+        elif form_data['system'] == 'system_pc':
+            system = "PC"
+        elif form_data['system'] == 'system_ps4':
+            system = "PS4"
+
     return render_template(
         'data.html',
         title='Active Users | Active Purchases',
@@ -150,6 +159,7 @@ def handle_form_submit():
         gameplay_values=data['values']['count_x'].values,
         purchase_values=data['values']['count_y'].values,
         user_counts=data['user_demographics']['count'].values,
+        system=system,
         user_demos=['13-19', '20-29', '30-39', '40-49', '50-59', '60-75']
     )
 
