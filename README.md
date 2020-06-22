@@ -21,5 +21,7 @@ Here we have a solution: a real-time analytics stream that targets games across 
 # Architecture
 ![](images/Architecture.png)
 
+The architecture leverages two Kafka consumers with one broker each, consuming two different event types. The consumers then publish them to a Cassandra database.
+
 # Next Steps
 ![](images/Wishlist.png)
