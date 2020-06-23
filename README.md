@@ -26,4 +26,4 @@ The architecture leverages two Kafka consumers with one broker each, consuming t
 # Next Steps
 ![](images/Wishlist.png)
 
-![Project Slides](https://www.slideshare.net/SamuelCollet/game-stream-presentation)
+[Project Slides](https://www.slideshare.net/SamuelCollet/game-stream-presentation)
