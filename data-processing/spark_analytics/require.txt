@@ -9,7 +9,7 @@ numpy==1.16.5
 py-dateutil==2.2
 py4j==0.10.7
 pypandoc==1.5
-pyspark==2.4.6
+pyspark==3.2.2
 python37-sagemaker-pyspark==1.3.0
 pytz==2019.3
 PyYAML==5.3.1
